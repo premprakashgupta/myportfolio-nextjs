@@ -28,6 +28,11 @@ function TempComponent() {
             active:"contactme",
             name:"Contact Me"
         },
+        {
+            href:"/blog?active=blog",
+            active:"blog",
+            name:"Blog"
+        },
     ]
 
     const [active, setActive] = useState("aboutme")

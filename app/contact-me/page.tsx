@@ -57,7 +57,7 @@ function Page({}: Props) {
   };
 
   return (
-    <div className={cn('min-h-screen flex items-center justify-center')}>
+    <div className={cn('min-h-screen flex items-center justify-center bg-[#E6DACE]')}>
       <div className={cn('bg-gray-100 p-8 rounded-md shadow-md w-96')}>
         <h2 className={cn('text-3xl font-semibold mb-6')}>Contact Me</h2>
 
