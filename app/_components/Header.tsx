@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 
 
-import React, { useEffect, useState } from 'react'
+import React, { Suspense, useEffect, useState } from 'react'
 
 const Header = () => {
     const navLink=[
@@ -30,7 +30,7 @@ const Header = () => {
         },
     ]
 
-    const [active, setActive] = useState("/aboutme")
+    const [active, setActive] = useState("aboutme")
     const search = useSearchParams();
     
     useEffect(() => {
@@ -43,9 +43,9 @@ const Header = () => {
       }, [search, active]);
 
     
-
-  return (
-    <div className='w-full h-[120px] sticky top-0 left-0 z-50 bg-white flex justify-center sm:justify-between items-center p-2 sm:p-5 text-lg font-thin'>
+      return (
+        <Suspense fallback={<div>Loading...</div>}>
+           <div className='w-full h-[120px] sticky top-0 left-0 z-50 bg-white flex justify-center sm:justify-between items-center p-2 sm:p-5 text-lg font-thin'>
         <div className="logo flex gap-3 items-center">
             <div className='w-[20px] h-[20px] hidden sm:block bg-blue-600'></div>
             <div className='hidden sm:flex'>
@@ -67,7 +67,9 @@ const Header = () => {
             
         </nav>
     </div>
-  )
+        </Suspense>
+      );
+  
 }
 
 export default Header
