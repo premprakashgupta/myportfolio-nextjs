@@ -1,0 +1,1 @@
+export const profileImage="https://my-portfolio-77cbc.web.app/assets/avatar.png"
