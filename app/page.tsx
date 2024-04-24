@@ -1,11 +1,41 @@
+"use client"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {TypographyH1, TypographyH2} from '@/components/ui/typography'
 import { Github, Instagram, Linkedin } from "lucide-react";
 import { Button } from "@/components/ui/button"
 import {profileImage} from "@/app/_constants/constant"
 import Link from "next/link";
+import { useData } from "./_state/context";
+import { useEffect, useState } from "react";
+// types.ts
+
+ interface User {
+  name: string;
+  profile: string;
+  about: string;
+  title: string;
+  subtitle: string;
+  linkedIn: string;
+  instagram: string;
+  github: string;
+  email: string;
+}
+
 
 export default function Home() {
+  const { data, loading } = useData();
+  const [userData, setUserData] = useState<User|null>(null);
+
+  useEffect(() => {
+    setUserData(data?.user)
+  }, [data])
+  
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+  
+  
+  
   return (
     <main className="flex min-h-screen relative">
       <div className="bg-[#E6DACE] w-[30%]">
@@ -24,18 +54,18 @@ export default function Home() {
         <TypographyH2 className="text-center" text="Prem Prakash Gupta"/>
         <hr className="bg-blue-600 h-[1px] w-1/2" />
         <br />
-        <p className="font-light uppercase">Software Engineer</p>
+        <p className="font-light uppercase">{userData?.profile}</p>
         <br />
         <div className="social-media h-[50px] w-full bg-white flex justify-center items-center gap-4">
-        <a href="https://www.linkedin.com/in/premprakashgupta-/">
+        <a href={userData?.linkedIn}>
         <Linkedin color="#000000" strokeWidth={1.25} />
 
         </a>
-        <a href="https://www.instagram.com/mypov_premprakash/">
+        <a href={userData?.instagram}>
         <Instagram size={28} strokeWidth={1.25} />
 
         </a>
-        <a href="https://github.com/premprakashgupta/">
+        <a href={userData?.github}>
         <Github color="#000000" strokeWidth={1.25} />
 
         </a>
@@ -54,12 +84,7 @@ export default function Home() {
 
           </div>
           <br />
-          <p className="">Experienced Full Stack Developer with proficiency in MERN stack
-and Flutter. Specializing in building robust and scalable web
-applications and mobile solutions. Adept at collaborating with
-cross-functional teams to deliver innovative and user-friendly
-products. Passionate about creating seamless, efficient, and
-cutting-edge software experiences</p>
+          <p className="">{userData?.about}</p>
         </div>
       </div>
     </main>
