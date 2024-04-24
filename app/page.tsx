@@ -77,7 +77,7 @@ export default function Home() {
           <TypographyH2 text="Here's who I am & what I do"/>
           <br />
           <div className="flex gap-4">
-          <Button variant="default"><a download={true} href="./resume/resume.pdf">Resume</a></Button>
+          <Button variant="default"><a download={true} href="./resume/resume_prem_prakash.pdf">Resume</a></Button>
           <Button variant="outline" asChild>
   <Link href="/projects?active=projects">Projects</Link>
 </Button>

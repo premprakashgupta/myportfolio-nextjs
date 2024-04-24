@@ -54,7 +54,7 @@ const Resume: React.FC = () => {
           <div className="w-full flex justify-between items-center">
             <TypographyH2 text={item.title} />
             {item.btn && (
-              <Button className="text-xs sm:text-sm"><a download={true} href="./resume/resume.pdf">Download Resume</a></Button>
+              <Button className="text-xs sm:text-sm"><a download={true} href="./resume/resume_prem_prakash.pdf">Download Resume</a></Button>
             )}
           </div>
           <br />
