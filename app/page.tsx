@@ -315,7 +315,7 @@ export default function Portfolio() {
             className="md:w-1/2 mb-10 md:mb-0"
           >
             <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-              Hello, I'm <span className="text-blue-600">Prem</span>
+              Hello, I&apos;m <span className="text-blue-600">Prem</span>
             </h1>
             <h2 className="text-2xl md:text-3xl text-gray-600 mb-6">
               Full Stack Developer & UI/UX Enthusiast
