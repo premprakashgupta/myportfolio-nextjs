@@ -280,77 +280,92 @@ export default function Portfolio() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#f8f9fa] to-[#e9ecef]">
+    <div className="min-h-screen">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-white bg-opacity-90 backdrop-blur-sm border-b border-gray-200">
+      <header className="sticky top-0 z-50 bg-gray-900 bg-opacity-50 backdrop-blur-md border-b border-gray-700 text-white">
         <div className="container mx-auto px-4 py-3 flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <div className="w-5 h-5 bg-blue-600 rounded-full"></div>
-            <h1 className="text-xl font-medium text-gray-800">Prem Prakash Gupta</h1>
+            <div className="w-5 h-5 bg-blue-400 rounded-full animate-pulse"></div>
+            <h1 className="text-2xl font-bold text-blue-400 tracking-wide">Prem Prakash Gupta</h1>
             <span className="text-gray-400">/</span>
-            <span className="text-gray-500">{userData.profile}</span>
+            <span className="text-gray-300">{userData.profile}</span>
           </div>
 
           <nav className="hidden md:flex gap-6">
-            <a onClick={() => handleScroll('about')} className="text-gray-600 hover:text-blue-600 transition-colors cursor-pointer">About</a>
-            <a onClick={() => handleScroll('experience')} className="text-gray-600 hover:text-blue-600 transition-colors cursor-pointer">Experience</a>
-            <a onClick={() => handleScroll('projects')} className="text-gray-600 hover:text-blue-600 transition-colors cursor-pointer">Projects</a>
-            <a onClick={() => handleScroll('skills')} className="text-gray-600 hover:text-blue-600 transition-colors cursor-pointer">Skills</a>
-            <a onClick={() => handleScroll('contact')} className="text-gray-600 hover:text-blue-600 transition-colors cursor-pointer">Contact</a>
+            <a onClick={() => handleScroll('about')} className="text-gray-300 hover:text-blue-400 transition-colors cursor-pointer relative group">About<span className="absolute left-0 bottom-0 w-0 h-0.5 bg-blue-400 group-hover:w-full transition-all duration-300"></span></a>
+            <a onClick={() => handleScroll('experience')} className="text-gray-300 hover:text-blue-400 transition-colors cursor-pointer relative group">Experience<span className="absolute left-0 bottom-0 w-0 h-0.5 bg-blue-400 group-hover:w-full transition-all duration-300"></span></a>
+            <a onClick={() => handleScroll('projects')} className="text-gray-300 hover:text-blue-400 transition-colors cursor-pointer relative group">Projects<span className="absolute left-0 bottom-0 w-0 h-0.5 bg-blue-400 group-hover:w-full transition-all duration-300"></span></a>
+            <a onClick={() => handleScroll('skills')} className="text-gray-300 hover:text-blue-400 transition-colors cursor-pointer relative group">Skills<span className="absolute left-0 bottom-0 w-0 h-0.5 bg-blue-400 group-hover:w-full transition-all duration-300"></span></a>
+            <a onClick={() => handleScroll('contact')} className="text-gray-300 hover:text-blue-400 transition-colors cursor-pointer relative group">Contact<span className="absolute left-0 bottom-0 w-0 h-0.5 bg-blue-400 group-hover:w-full transition-all duration-300"></span></a>
           </nav>
 
-          <Button className="bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white">
-            <a download href="./resume/resume_prem_prakash.pdf">Download CV</a>
+          <Button className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg transform hover:scale-105 transition-transform duration-300">
+            <a download href="./resume/resume_prem_prakash.docx">Download CV</a>
           </Button>
         </div>
       </header>
 
       {/* Hero Section */}
-      <section className="py-16 md:py-24 bg-gradient-to-r from-[#f0f7ff] to-[#e6f0ff]">
-        <div className="container mx-auto px-4 flex flex-col md:flex-row items-center">
+      <section className="relative py-16 md:py-24 text-white overflow-hidden">
+        {/* Animated Background */}
+        <div className="absolute inset-0 z-0" style={{
+          background: 'radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px), radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px)',
+          backgroundSize: '40px 40px',
+          backgroundPosition: '0 0, 20px 20px',
+          animation: 'moveBackground 20s linear infinite'
+        }}></div>
+        <style jsx>{`
+          @keyframes moveBackground {
+            from { background-position: 0 0, 20px 20px; }
+            to { background-position: 40px 40px, 60px 60px; }
+          }
+        `}</style>
+        <div className="absolute inset-0 z-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 opacity-90"></div>
+
+        <div className="container mx-auto px-4 relative z-10 flex flex-col md:flex-row items-center justify-between">
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
+            initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-            className="md:w-1/2 mb-10 md:mb-0"
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="md:w-1/2 mb-10 md:mb-0 text-center md:text-left"
           >
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-              Hello, I&apos;m <span className="text-blue-600">Prem</span>
+            <h1 className="text-4xl md:text-6xl font-extrabold leading-tight mb-4">
+              Hello, I&apos;m <span className="text-blue-400">Prem</span>
             </h1>
-            <h2 className="text-2xl md:text-3xl text-gray-600 mb-6">
+            <h2 className="text-2xl md:text-4xl font-semibold text-gray-300 mb-6">
               Full Stack Developer & UI/UX Enthusiast
             </h2>
-            <p className="text-gray-600 mb-8 max-w-lg">
+            <p className="text-lg text-gray-400 mb-8 max-w-lg mx-auto md:mx-0">
               {userData.about}
             </p>
 
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap gap-4 justify-center md:justify-start">
               <Button
                 size="lg"
-                className="bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white"
+                className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg transform hover:scale-105 transition-transform duration-300"
                 onClick={() => handleScroll('projects')}
               >
-                View Projects
+                View Projects <MoveRight className="ml-2" size={18} />
               </Button>
               <Button
                 variant="outline"
                 size="lg"
-                className="border-blue-600 text-blue-600 hover:bg-blue-50"
+                className="border-blue-400 text-blue-400 hover:bg-blue-900 hover:text-white shadow-lg transform hover:scale-105 transition-transform duration-300"
                 onClick={() => handleScroll('contact')}
               >
                 Contact Me
               </Button>
             </div>
 
-            <div className="mt-8 flex gap-4">
+            <div className="mt-10 flex gap-4 justify-center md:justify-start">
               {userData.linkedIn && (
                 <a
                   href={userData.linkedIn}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-white p-3 rounded-full shadow-sm hover:shadow-md transition-shadow"
+                  className="bg-gray-800 p-3 rounded-full shadow-md hover:bg-blue-700 transition-colors duration-300"
                 >
-                  <Linkedin className="text-blue-700" size={24} />
+                  <Linkedin className="text-blue-400" size={24} />
                 </a>
               )}
 
@@ -359,9 +374,9 @@ export default function Portfolio() {
                   href={userData.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-white p-3 rounded-full shadow-sm hover:shadow-md transition-shadow"
+                  className="bg-gray-800 p-3 rounded-full shadow-md hover:bg-gray-700 transition-colors duration-300"
                 >
-                  <Github className="text-gray-800" size={24} />
+                  <Github className="text-gray-400" size={24} />
                 </a>
               )}
 
@@ -370,42 +385,74 @@ export default function Portfolio() {
                   href={userData.instagram}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-white p-3 rounded-full shadow-sm hover:shadow-md transition-shadow"
+                  className="bg-gray-800 p-3 rounded-full shadow-md hover:bg-pink-700 transition-colors duration-300"
                 >
-                  <Instagram className="text-pink-600" size={24} />
+                  <Instagram className="text-pink-400" size={24} />
                 </a>
               )}
 
               {userData.email && (
                 <a
                   href={`mailto:${userData.email}`}
-                  className="bg-white p-3 rounded-full shadow-sm hover:shadow-md transition-shadow"
+                  className="bg-gray-800 p-3 rounded-full shadow-md hover:bg-red-700 transition-colors duration-300"
                 >
-                  <Mail className="text-red-600" size={24} />
+                  <Mail className="text-red-400" size={24} />
                 </a>
               )}
             </div>
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
+            initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="md:w-1/2 flex justify-center"
+            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+            className="md:w-1/2 flex justify-center md:justify-end relative"
           >
-            <div className="relative">
-              <div className="absolute -inset-4 bg-gradient-to-r from-blue-400 to-indigo-600 rounded-full blur-md opacity-30"></div>
-              <Avatar className="w-64 h-64 md:w-80 md:h-80 border-4 border-white">
-                <AvatarImage src={profileImage} className="object-cover" />
-                <AvatarFallback className="bg-gray-200">PP</AvatarFallback>
-              </Avatar>
+            {/* Code Snippet / Terminal */}
+            <div className="relative w-full max-w-md bg-gray-800 rounded-lg shadow-xl overflow-hidden border border-gray-700">
+              <div className="flex items-center px-4 py-2 bg-gray-700">
+                <div className="flex space-x-1.5">
+                  <span className="w-3 h-3 bg-red-500 rounded-full"></span>
+                  <span className="w-3 h-3 bg-yellow-500 rounded-full"></span>
+                  <span className="w-3 h-3 bg-green-500 rounded-full"></span>
+                </div>
+                <span className="ml-3 text-sm text-gray-300">terminal.js</span>
+              </div>
+              <pre className="p-4 text-sm font-mono text-green-400 overflow-auto h-64">
+                <code>
+                  <span className="text-blue-400">const</span> <span className="text-yellow-300">developer</span> = {"{"}<br />
+                  &nbsp;&nbsp;name: <span className="text-green-400">&apos;Prem Prakash Gupta&apos;</span>,<br />
+                  &nbsp;&nbsp;skills: [<span className="text-purple-400">&apos;React&apos;</span>, <span className="text-purple-400">&apos;Next.js&apos;</span>, <span className="text-purple-400">&apos;Node.js&apos;</span>, <span className="text-purple-400">&apos;TypeScript&apos;</span>],<br />
+                  &nbsp;&nbsp;passion: <span className="text-green-400">&apos;Building innovative solutions&apos;</span>,<br />
+                  &nbsp;&nbsp;status: <span className="text-orange-400">&apos;Open for opportunities&apos;</span>,<br />
+                  {"}"};<br /><br />
+                  <span className="text-blue-400">function</span> <span className="text-yellow-300">connect</span>(dev) {"{"}<br />
+                  &nbsp;&nbsp;<span className="text-red-400">if</span> (dev.<span className="text-yellow-300">status</span> === <span className="text-orange-400">&apos;Open for opportunities&apos;</span>) {"{"}<br />
+                  &nbsp;&nbsp;&nbsp;&nbsp;dev.<span className="text-yellow-300">sayHello</span>();<br />
+                  &nbsp;&nbsp;{"}"}<br />
+                  {"}"}<br /><br />
+                  <span className="text-yellow-300">connect</span>(developer);
+                </code>
+              </pre>
             </div>
+            {/* Avatar overlaying the code snippet */}
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+              className="absolute -bottom-10 left-1/2 transform -translate-x-1/2 md:left-auto md:right-0 md:translate-x-0"
+            >
+              <Avatar className="w-32 h-32 md:w-44 md:h-44 border-4 border-blue-400 shadow-lg">
+                <AvatarImage src={profileImage} className="object-cover" />
+                <AvatarFallback className="bg-gray-200 text-gray-800">PP</AvatarFallback>
+              </Avatar>
+            </motion.div>
           </motion.div>
         </div>
       </section>
 
       {/* Experience Section */}
-      <section id="experience" className="py-16 bg-white">
+      <section id="experience" className="py-16 bg-white bg-opacity-10">
         <div className="container mx-auto px-4">
           <TypographyH2 className="text-center mb-16" text="Professional Journey" />
 
@@ -422,12 +469,12 @@ export default function Portfolio() {
                 transition={{ duration: 0.5, delay: index * 0.2 }}
                 className={`mb-12 flex w-full ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
                 <div className={`w-5/12 pl-10`}>
-                  <div className={`relative p-6 rounded-xl shadow-md ${index % 2 === 0 ? 'bg-gradient-to-r from-blue-50 to-indigo-50' : 'bg-gradient-to-l from-blue-50 to-indigo-50'}`}>
+                  <div className={`relative p-6 rounded-xl shadow-md bg-opacity-10 transform hover:scale-105 transition-transform duration-300 ${index % 2 === 0 ? 'bg-gradient-to-r from-blue-50 to-indigo-50' : 'bg-gradient-to-l from-blue-50 to-indigo-50'}`}>
                     <div className="flex justify-between items-start">
                       <div>
-                        <h3 className="text-xl font-bold text-gray-800">{exp.role}</h3>
-                        <p className="text-blue-600 font-medium">{exp.company}</p>
-                        <p className="text-gray-500 text-sm">{exp.location} | {exp.dates}</p>
+                        <h3 className="text-xl font-bold text-blue-400">{exp.role}</h3>
+                        <p className="text-gray-300 font-medium">{exp.company}</p>
+                        <p className="text-gray-400 text-sm">{exp.location} | {exp.dates}</p>
                       </div>
                       <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white text-xs px-3 py-1 rounded-full">
                         Project: {exp.project.name}
@@ -435,12 +482,12 @@ export default function Portfolio() {
                     </div>
 
                     <div className="mt-4">
-                      <h4 className="font-medium text-gray-700">Responsibilities:</h4>
+                      <h4 className="font-semibold text-gray-300">Responsibilities:</h4>
                       <ul className="mt-2 space-y-1">
                         {exp.responsibilities.map((res, i) => (
                           <li key={i} className="flex items-start">
-                            <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-2"></div>
-                            <span className="text-gray-600">{res}</span>
+                            <div className="w-2 h-2 bg-blue-400 rounded-full mt-2 mr-2"></div>
+                            <span className="text-gray-400">{res}</span>
                           </li>
                         ))}
                       </ul>
@@ -455,7 +502,7 @@ export default function Portfolio() {
                       ))}
                     </div>
                     {/* Timeline marker */}
-                    <div className={`absolute top-6 w-6 h-6 bg-gradient-to-r from-blue-600 to-indigo-700 rounded-full border-4 border-white ${index % 2 === 0 ? '-right-3' : '-left-3'}`}>
+                    <div className={`absolute top-6 w-8 h-8 bg-gradient-to-r from-blue-600 to-indigo-700 rounded-full border-4 border-white animate-pulse ${index % 2 === 0 ? '-right-4' : '-left-4'}`}>
                     </div>
                   </div>
 
@@ -468,7 +515,7 @@ export default function Portfolio() {
       </section>
 
       {/* Skills Section */}
-      <section id="skills" className="py-16 bg-gradient-to-b from-white to-[#f0f7ff]">
+      <section id="skills" className="py-16 bg-gradient-to-b from-white to-[#f0f7ff] bg-opacity-10">
         <div className="container mx-auto px-4">
           <TypographyH2 className="text-center mb-16" text="Technical Expertise" />
 
@@ -504,7 +551,7 @@ export default function Portfolio() {
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className="py-16 bg-gradient-to-b from-[#f0f7ff] to-[#e6f0ff]">
+      <section id="projects" className="py-16 bg-gradient-to-b from-[#f0f7ff] to-[#e6f0ff] bg-opacity-10">
         <div className="container mx-auto px-4">
           <TypographyH2 className="text-center mb-4" text="My Projects" />
           <TypographyP className="text-center text-gray-600 max-w-2xl mx-auto mb-16">
@@ -519,7 +566,7 @@ export default function Portfolio() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="bg-white rounded-xl shadow-lg p-6 flex flex-col justify-between"
+                className="bg-white rounded-xl shadow-lg p-6 flex flex-col justify-between transform hover:scale-105 hover:shadow-2xl transition-all duration-300"
               >
                 <div>
                   <h3 className="font-bold text-gray-800 text-lg mb-2">{project.projectNameAndTechStack}</h3>
@@ -564,7 +611,7 @@ export default function Portfolio() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
-              className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8 shadow-sm"
+              className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8 shadow-sm bg-opacity-10"
             >
               <h3 className="text-xl font-bold text-gray-800 mb-6">Contact Information</h3>
 
@@ -632,41 +679,50 @@ export default function Portfolio() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm"
+              className="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm bg-opacity-10"
             >
               <h3 className="text-xl font-bold text-gray-800 mb-6">Send a Message</h3>
 
-              <form className="space-y-4">
+              <form className="space-y-4 text-white">
                 <div>
-                  <label className="block text-gray-700 text-sm font-medium mb-1">Name</label>
+                  <label htmlFor="name" className="block text-gray-300 text-sm font-medium mb-1">Name</label>
                   <input
                     type="text"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    id="name"
+                    name="name"
+                    required
+                    className="w-full px-4 py-2 bg-gray-200 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-500"
                     placeholder="Your name"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-gray-700 text-sm font-medium mb-1">Email</label>
+                  <label htmlFor="email" className="block text-gray-300 text-sm font-medium mb-1">Email</label>
                   <input
                     type="email"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    id="email"
+                    name="email"
+                    required
+                    className="w-full px-4 py-2 bg-gray-200 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-500"
                     placeholder="your.email@example.com"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-gray-700 text-sm font-medium mb-1">Message</label>
+                  <label htmlFor="message" className="block text-gray-300 text-sm font-medium mb-1">Message</label>
                   <textarea
+                    id="message"
+                    name="message"
                     rows={4}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    required
+                    className="w-full px-4 py-2 bg-gray-200 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-500"
                     placeholder="Your message here..."
                   ></textarea>
                 </div>
 
                 <Button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white"
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white shadow-lg transform hover:scale-105 transition-transform duration-300"
                 >
                   Send Message
                 </Button>
@@ -677,17 +733,60 @@ export default function Portfolio() {
       </section>
 
       {/* Footer */}
-      <footer className="py-8 bg-gradient-to-r from-blue-900 to-indigo-900 text-white">
+      <footer className="py-8 bg-gray-900 bg-opacity-70 text-white">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="mb-4 md:mb-0">
-              <h3 className="text-xl font-bold">Prem Prakash Gupta</h3>
-              <p className="text-blue-200">Full Stack Developer</p>
+            <div className="mb-4 md:mb-0 text-center md:text-left">
+              <h3 className="text-2xl font-bold text-blue-400">Prem Prakash Gupta</h3>
+              <p className="text-gray-400">Full Stack Developer</p>
             </div>
 
-            <div className="text-center md:text-right">
-              <p className="text-blue-200">© {new Date().getFullYear()} All Rights Reserved</p>
-              <p className="text-blue-200 text-sm mt-1">Designed and built with ❤️</p>
+            <div className="flex flex-col items-center md:items-end">
+              <div className="flex gap-4 mb-4">
+                {userData.linkedIn && (
+                  <a
+                    href={userData.linkedIn}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-gray-800 p-2 rounded-full shadow-md hover:bg-blue-700 transition-colors duration-300"
+                  >
+                    <Linkedin className="text-blue-400" size={20} />
+                  </a>
+                )}
+
+                {userData.github && (
+                  <a
+                    href={userData.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-gray-800 p-2 rounded-full shadow-md hover:bg-gray-700 transition-colors duration-300"
+                  >
+                    <Github className="text-gray-400" size={20} />
+                  </a>
+                )}
+
+                {userData.instagram && (
+                  <a
+                    href={userData.instagram}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-gray-800 p-2 rounded-full shadow-md hover:bg-pink-700 transition-colors duration-300"
+                  >
+                    <Instagram className="text-pink-400" size={20} />
+                  </a>
+                )}
+
+                {userData.email && (
+                  <a
+                    href={`mailto:${userData.email}`}
+                    className="bg-gray-800 p-2 rounded-full shadow-md hover:bg-red-700 transition-colors duration-300"
+                  >
+                    <Mail className="text-red-400" size={20} />
+                  </a>
+                )}
+              </div>
+              <p className="text-gray-400">© {new Date().getFullYear()} All Rights Reserved</p>
+              <p className="text-gray-500 text-sm mt-1">Designed and built with ❤️</p>
             </div>
           </div>
         </div>
