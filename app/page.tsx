@@ -315,9 +315,9 @@ export default function Portfolio() {
         <div className="container mx-auto px-4 py-3 flex justify-between items-center">
           <div className="flex items-center gap-3">
             <div className="w-5 h-5 bg-blue-400 rounded-full animate-pulse"></div>
-            <h1 className="text-2xl font-bold text-blue-400 tracking-wide">Prem Prakash Gupta</h1>
-            <span className="text-gray-400">/</span>
-            <span className="text-gray-300">{userData.profile}</span>
+            <h1 className="text-md md:text-2xl font-bold text-blue-400 tracking-wide">Prem Prakash Gupta</h1>
+            <span className="hidden md:block text-gray-400">/</span>
+            <span className="hidden md:block text-gray-300">{userData.profile}</span>
           </div>
 
           <nav className="hidden md:flex gap-6">
@@ -329,7 +329,7 @@ export default function Portfolio() {
           </nav>
 
           <Button className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg transform hover:scale-105 transition-transform duration-300">
-            <a download href="./resume/resume_prem_prakash.docx">Download CV</a>
+            <a download href="./resume/resume_prem_prakash.docx" className="text-xs md:text-lg" >Download CV</a>
           </Button>
         </div>
       </header>
@@ -438,7 +438,7 @@ export default function Portfolio() {
             className="md:w-1/2 flex justify-center md:justify-end relative"
           >
             {/* Code Snippet / Terminal */}
-            <div className="relative w-full max-w-md bg-gray-800 rounded-lg shadow-xl overflow-hidden border border-gray-700">
+            <div className="relative w-[300px] sm:w-full max-w-md bg-gray-800 rounded-lg shadow-xl overflow-hidden border border-gray-700">
               <div className="flex items-center px-4 py-2 bg-gray-700">
                 <div className="flex space-x-1.5">
                   <span className="w-3 h-3 bg-red-500 rounded-full"></span>
@@ -496,8 +496,8 @@ export default function Portfolio() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.2 }}
-                className={`mb-12 flex w-full ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
-                <div className={`w-5/12 pl-10`}>
+                className={`mb-12 flex w-full flex-col md:flex-row ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
+                <div className={`w-full md:w-5/12 pl-10`}>
                   <div className={`relative p-6 rounded-xl shadow-md bg-opacity-10 transform hover:scale-105 transition-transform duration-300 ${index % 2 === 0 ? 'bg-gradient-to-r from-blue-50 to-indigo-50' : 'bg-gradient-to-l from-blue-50 to-indigo-50'}`}>
                     <div className="flex justify-between items-start">
                       <div>
