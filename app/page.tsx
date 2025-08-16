@@ -28,6 +28,7 @@ interface Project {
   priority: string | undefined;
   description: string;
   techStack: string[];
+  detailedDescription?: string;
 }
 
 interface Experience {
@@ -74,59 +75,67 @@ const techColorMap: { [key: string]: string } = {
 
 const projectsData: Project[] = [
   {
-    "projectNameAndTechStack": "WhatsApp Clone – MERN, Socket.IO",
+    "projectNameAndTechStack": "WhatsApp Clone – MongoDB, Express.js, React, Node.js, Socket.IO",
     "link": "https://github.com/premprakashgupta/whatsApp_clone_Mern",
     "priority": undefined,
     "description": "A real-time chat application mimicking WhatsApp's core features. Users can send and receive messages instantly, thanks to the power of Socket.IO and the MERN stack.",
-    "techStack": ["MERN", "Socket.IO"]
+    "detailedDescription": "Real-time chat application\nMimics WhatsApp features\nInstant message sending and receiving\nUtilizes Socket.IO for real-time communication",
+    "techStack": ["MongoDB", "Express.js", "React", "Node.js", "Socket.IO"]
   },
   {
-    "projectNameAndTechStack": "Instagram Clone – MERN, Cloudinary",
+    "projectNameAndTechStack": "Instagram Clone – MongoDB, Express.js, React, Node.js, Cloudinary",
     "link": "https://github.com/premprakashgupta/preminsta",
     "priority": undefined,
     "description": "A full-featured Instagram clone where users can register, post photos, follow other users, and receive notifications. Built with the MERN stack and Cloudinary for image management.",
-    "techStack": ["MERN", "Cloudinary"]
+    "detailedDescription": "Full-featured Instagram clone\nUser registration and photo posting\nFollow other users and receive notifications\nCloudinary for image management",
+    "techStack": ["MongoDB", "Express.js", "React", "Node.js", "Cloudinary"]
   },
   {
     "projectNameAndTechStack": "Resume Builder – React, jsPDF",
     "link": "https://resume4u.netlify.app/resume",
     "priority": undefined,
     "description": "A simple yet powerful resume builder that allows users to create professional resumes and export them as PDF or image files. Built with React and jsPDF.",
+    "detailedDescription": "Simple yet powerful resume builder\nCreate professional resumes\nExport as PDF or image files",
     "techStack": ["React", "jsPDF"]
   },
   {
     "projectNameAndTechStack": "Museuo Bharat – Flutter, Firebase, Dialogflow",
-    "link": "clent project",
+    "link": "client project",
     "priority": undefined,
     "description": "A mobile application for booking museum tickets. It features a chatbot powered by Dialogflow to assist users with booking and information gathering. Built with Flutter and Firebase.",
+    "detailedDescription": "Mobile application for booking museum tickets\nFeatures a chatbot powered by Dialogflow\nAssists users with booking and information gathering",
     "techStack": ["Flutter", "Firebase", "Dialogflow"]
   },
   {
-    "projectNameAndTechStack": "Chikit (Medicine SaaS) – MERN",
+    "projectNameAndTechStack": "Chikit (Medicine SaaS) – MongoDB, Express.js, React, Node.js",
     "link": "https://chikit360.thundergits.com/",
     "priority": "highlighted",
     "description": "A multi-tenant SaaS platform for managing medical stores. It includes features like inventory management, billing, and payment gateway integration. Built with the MERN stack.",
-    "techStack": ["MERN"]
+    "detailedDescription": "SaaS multi-tenant\nRole-based authentication\nRazorpay payment integration\nSubscription model\nInventory management\nMedicine management\nSale management\nExpiry alert and minimum stock alert\nBarcode scanner",
+    "techStack": ["MongoDB", "Express.js", "React", "Node.js"]
   },
   {
-    "projectNameAndTechStack": "Edugits – MERN",
+    "projectNameAndTechStack": "Edugits – MongoDB, Express.js, React, Node.js",
     "link": "https://edugits.thundergits.com/",
     "priority": "highlighted",
     "description": "A comprehensive school management system with features like class creation, student management, fee management, and subscription-based services. Built with the MERN stack.",
-    "techStack": ["MERN"]
+    "detailedDescription": "SaaS multi-tenant\nRole-based authentication\nRazorpay payment integration\nSubscription model\nClass, subject, exam, result, student, admit card management system",
+    "techStack": ["MongoDB", "Express.js", "React", "Node.js"]
   },
   {
-    "projectNameAndTechStack": "Sticky Notes App – MERN",
+    "projectNameAndTechStack": "Sticky Notes App – MongoDB, Express.js, React, Node.js",
     "link": "https://github.com/premprakashgupta/stickyNote",
     "priority": undefined,
     "description": "A simple and intuitive sticky notes application that allows users to create and manage notes from anywhere. Built with the MERN stack for seamless data synchronization.",
-    "techStack": ["MERN"]
+    "detailedDescription": "Simple and intuitive sticky notes application\nCreate and manage notes from anywhere\nSeamless data synchronization",
+    "techStack": ["MongoDB", "Express.js", "React", "Node.js"]
   },
   {
     "projectNameAndTechStack": "Flutter E-commerce App – Flutter, REST API",
     "link": "https://github.com/premprakashgupta/e_commerce_using_flutter",
     "priority": undefined,
     "description": "A beautiful and functional e-commerce application built with Flutter. It communicates with a backend server through a REST API and uses Firebase for authentication and other services.",
+    "detailedDescription": "Beautiful and functional e-commerce application\nCommunicates with backend server through REST API\nUses Firebase for authentication and other services",
     "techStack": ["Flutter", "REST API", "Firebase"]
   },
   {
@@ -134,6 +143,7 @@ const projectsData: Project[] = [
     "link": "",
     "priority": undefined,
     "description": "A mobile application for developers to discuss and share code snippets. It features real-time chat and code highlighting. Built with Flutter and Firebase.",
+    "detailedDescription": "Mobile application for developers\nDiscuss and share code snippets\nReal-time chat\nCode highlighting",
     "techStack": ["Flutter", "Firebase"]
   },
   {
@@ -141,6 +151,7 @@ const projectsData: Project[] = [
     "link": "https://github.com/premprakashgupta/attendance",
     "priority": undefined,
     "description": "A mobile application for managing student attendance. It also includes features for conducting tests and assessments. Built with Flutter and Firebase.",
+    "detailedDescription": "Mobile application for managing student attendance\nIncludes features for conducting tests and assessments",
     "techStack": ["Flutter", "Firebase"]
   },
   {
@@ -148,6 +159,7 @@ const projectsData: Project[] = [
     "link": "https://github.com/premprakashgupta/women-safety-app",
     "priority": undefined,
     "description": "A mobile application designed for women's safety. It can send emergency alerts with location to pre-defined contacts via SMS. Built with Flutter.",
+    "detailedDescription": "Mobile application designed for women's safety\nSends emergency alerts with location to pre-defined contacts via SMS",
     "techStack": ["Flutter", "SMS"]
   },
   {
@@ -155,72 +167,89 @@ const projectsData: Project[] = [
     "link": "https://codingpandas.in/",
     "priority": "most highlighted",
     "description": "A competitive programming platform similar to LeetCode, where users can solve coding problems and participate in contests. The backend is powered by Node.js.",
-    "techStack": ["Node.js"]
+    "detailedDescription": "special: 85% backend developed by me\nfeature:\nblog management with role based flow like edtor write, admin approved , super admin can do anything\nleet code like question management\nuser management\nreal time notification using ssr\ncompilar to compile question submission\nR2 for file uoload",
+    "techStack": ["Next.js", "Node.js", "R2"]
   },
   {
     "projectNameAndTechStack": "Pasuseva – MERN, Razorpay",
     "link": "https://pasuseva.in/",
     "priority": "highlighted",
     "description": "A platform for managing loans for animal husbandry. It includes features for loan application, processing, and repayment, with Razorpay integration for payments.",
-    "techStack": ["MERN", "Razorpay"]
+    "detailedDescription": "yojana application review, job application review\npayment integration with razor pay\nemail integration using nodemailer and send grid\nimage upload using cloudinary",
+    "techStack": ["HTML", "Tailwind CSS", "JavaScript", "React.js", "TypeScript", "Node.js", "Razorpay", "Nodemailer", "SendGrid", "Cloudinary"]
   },
   {
     "projectNameAndTechStack": "Loqo AI – MERN",
     "link": "https://loqo.ai/",
     "priority": "highlighted",
     "description": "A streaming platform for spiritual videos, similar to YouTube. It features a vast library of content like Ramayan and Mahabharat. Built with the MERN stack.",
-    "techStack": ["MERN"]
+    "detailedDescription": "stream video using HSL and videojs\ngoogle ads integration",
+    "techStack": ["Next.js", "HSL", "Video.js", "Google Ads"]
   },
   {
-    "projectNameAndTechStack": "Fruits E-commerce (Sunshine)",
+    "projectNameAndTechStack": "Fruits E-commerce (Sunshine) – MongoDB, Express.js, React, Node.js",
     "link": "https://sunshine-server.onrender.com/",
     "priority": undefined,
     "description": "A simple e-commerce website for selling fresh fruits. It includes basic features like product listing, shopping cart, and checkout. Built with the MERN stack.",
-    "techStack": ["MERN"]
+    "detailedDescription": "Simple e-commerce website for selling fresh fruits\nIncludes basic features like product listing, shopping cart, and checkout",
+    "techStack": ["MongoDB", "Express.js", "React", "Node.js"]
   },
   {
     "projectNameAndTechStack": "Web Editor",
     "link": "https://webeditor4u.netlify.app/",
     "priority": undefined,
     "description": "A simple web-based text editor with basic formatting features, similar to Notepad. A handy tool for quick notes and code snippets.",
+    "detailedDescription": "Simple web-based text editor\nBasic formatting features\nSimilar to Notepad\nHandy tool for quick notes and code snippets",
     "techStack": ["HTML", "CSS", "JavaScript"]
   },
   {
     "projectNameAndTechStack": "Enersole Bio Gas site",
     "link": "https://www.enersolbiopower.com/",
-    "priority": undefined,
+    "priority": "highlighted",
     "description": "A website for a biogas company to showcase their products and services. It provides information about the company and its offerings.",
+    "detailedDescription": "Website for a biogas company\nShowcases products and services\nProvides information about the company and its offerings",
     "techStack": ["HTML", "CSS", "JavaScript"]
   },
   {
-    "projectNameAndTechStack": "P-Square Pharmacy",
+    "projectNameAndTechStack": "P-Square Pharmacy – MongoDB, Express.js, React, Node.js",
     "link": "https://chikit360-psquare.thundergits.com/signin",
-    "priority": undefined,
+    "priority": "highlighted",
     "description": "A medicine management system for an individual medical store. It helps in managing inventory, sales, and customer records.",
-    "techStack": ["MERN"]
+    "detailedDescription": "Role-based authentication\nRazorpay payment integration\nSubscription model\nInventory management\nMedicine management\nSale management\nExpiry alert and minimum stock alert\nBarcode scanner",
+    "techStack": ["MongoDB", "Express.js", "React", "Node.js"]
   },
   {
     "projectNameAndTechStack": "Carpet Decore site",
     "link": "https://carpetsdecor.com/",
-    "priority": undefined,
+    "priority": "highlighted",
     "description": "A website to showcase a client's carpet products. It features a beautiful gallery and product details.",
+    "detailedDescription": "Website to showcase client's carpet products\nFeatures a beautiful gallery and product details",
     "techStack": ["HTML", "CSS", "JavaScript"]
   },
   {
-    "projectNameAndTechStack": "netajee ",
+    "projectNameAndTechStack": "Netajee ",
     "link": "https://netajee.in/",
     "priority": "highlighted",
     "description": "An election management application with an admin panel. It helps in managing campaigns, voters, and election results.",
-    "techStack": ["MERN"]
+    "detailedDescription": "manage article, news, press releas, volunteer, track volunteer, KYC of voter,\nmember ship card\npolls for voting guess for leader",
+    "techStack": ["React", "Node.js", "MongoDB", "React Native"]
   },
   {
-    "projectNameAndTechStack": "volcanic classes",
+    "projectNameAndTechStack": "Volcanic Classes – MongoDB, Express.js, React, Node.js",
     "link": "",
-    "priority": undefined,
+    "priority": "highlighted",
     "description": "An online learning platform for students. It provides video lectures, notes, and quizzes on various subjects.",
-    "techStack": ["MERN"]
+    "techStack": ["MongoDB", "Express.js", "React", "Node.js"]
   }
-];
+].sort((a, b) => {
+  if (a.priority === "highlighted" && b.priority !== "highlighted") {
+    return -1;
+  } else if (a.priority !== "highlighted" && b.priority === "highlighted") {
+    return 1;
+  } else {
+    return 0;
+  }
+});
 
 const experience: Experience[] = [
   {
@@ -515,7 +544,7 @@ export default function Portfolio() {
       </section>
 
       {/* Skills Section */}
-      <section id="skills" className="py-16 bg-gradient-to-b from-white to-[#f0f7ff] bg-opacity-10">
+      <section id="skills" className="py-16 bg-gradient-to-b from-white to-[#f0f7ff]">
         <div className="container mx-auto px-4">
           <TypographyH2 className="text-center mb-16" text="Technical Expertise" />
 
@@ -551,7 +580,7 @@ export default function Portfolio() {
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className="py-16 bg-gradient-to-b from-[#f0f7ff] to-[#e6f0ff] bg-opacity-10">
+      <section id="projects" className="py-16 bg-gradient-to-b from-[#f0f7ff] to-[#e6f0ff]">
         <div className="container mx-auto px-4">
           <TypographyH2 className="text-center mb-4" text="My Projects" />
           <TypographyP className="text-center text-gray-600 max-w-2xl mx-auto mb-16">
@@ -566,11 +595,29 @@ export default function Portfolio() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="bg-white rounded-xl shadow-lg p-6 flex flex-col justify-between transform hover:scale-105 hover:shadow-2xl transition-all duration-300"
+                className="bg-white rounded-xl shadow-lg p-6 flex flex-col justify-between transform hover:scale-105 hover:shadow-2xl transition-all duration-300 relative"
               >
+                {project.priority === "highlighted" && (
+                  <div className="absolute top-2 right-2 w-3 h-3 bg-green-500 rounded-full flex items-center justify-center">
+                    <span className="relative flex h-3 w-3">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                    </span>
+                  </div>
+                )}
                 <div>
                   <h3 className="font-bold text-gray-800 text-lg mb-2">{project.projectNameAndTechStack}</h3>
-                  <p className="text-sm text-gray-600 mb-4">{project.description}</p>
+                  <p className="text-sm text-gray-600 mb-2">{project.description}</p>
+                  {project.detailedDescription && (
+                    <>
+                      <h4 className="font-semibold text-gray-700 mt-2 mb-1">Key Features:</h4>
+                      <ul className="list-disc list-inside text-sm text-gray-600 mb-4 space-y-1">
+                        {project.detailedDescription.split('\n').map((item, i) => (
+                          <li key={i}>{item.trim().replace(/^- /, '')}</li>
+                        ))}
+                      </ul>
+                    </>
+                  )}
                   <div className="flex flex-wrap gap-2 mb-4">
                     {project.techStack.map((tech, i) => (
                       <span key={i} className={`text-xs px-2 py-1 rounded-full ${techColorMap[tech] || 'bg-gray-200 text-gray-800'}`}>

@@ -1,0 +1,76 @@
+
+Chikit (Medicine SaaS) – MERN: 
+tech stack:
+react,nodejs,mongodb
+feature:
+- saas multi-tenant
+-role base authentication
+-rozerpay pament interigation
+-subscription model
+-inventry management
+-medicine management
+-sale managment
+-expiry alert and minimum stock alert
+-barcode scanner
+
+Edugits – MERN
+tech stack:
+react,nodejs,mongodb
+feature:
+- saas muti-tenant
+-role base authentication
+-rozerpay pament interigation
+-subscription model
+-class,subect,exam,result,student,admit card management system
+
+Pasuseva – MERN, Razorpay
+tech-stack: 
+html,tailwind css,vanila javascript: website
+reactjs+type script : admin panel
+nodejs: backend
+
+feature:
+- yojana application review, job application review
+- payment integration with razor pay
+- email integration using nodemailer and send grid
+- image upload using cloudinary
+
+Loqo AI – MERN
+tech stack: nextjs
+feature:
+- stream video using HSL and videojs
+- google ads integration
+
+
+P-Square Pharmacy
+tech stack:
+react,nodejs,mongodb
+feature:
+-role base authentication
+-rozerpay pament interigation
+-subscription model
+-inventry management
+-medicine management
+-sale managment
+-expiry alert and minimum stock alert
+-barcode scanner
+
+Netajee
+tech stack:
+react,nodejs,mongodb,react-native
+feature:
+-manage article, news, press releas, volunteer, track volunteer, KYC of voter,
+-member ship card
+-polls for voting guess for leader
+
+
+Coding Pandas Platform – Node.js
+tech stack: nextjs, nodejs
+special: 85% backend developed by me
+feature:
+-blog management with role based flow like edtor write, admin approved , super admin can do anything
+-leet code like question management
+- user management
+- real time notification using ssr
+- compilar to compile question submission
+- R2 for file uoload
