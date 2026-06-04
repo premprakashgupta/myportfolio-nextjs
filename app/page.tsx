@@ -1,840 +1,754 @@
 "use client";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { TypographyH1, TypographyH2, TypographyP } from '@/components/ui/typography';
-import { Github, Instagram, Linkedin, Mail, MoveRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { profileImage } from "@/app/_constants/constant";
+
+import { useState, useEffect, useRef } from "react";
+import { motion, useInView } from "framer-motion";
+import { 
+  Github, 
+  Linkedin, 
+  Mail, 
+  Phone, 
+  ExternalLink, 
+  FileText, 
+  Copy, 
+  Check, 
+  ArrowRight,
+  Code2,
+  Terminal,
+  Menu,
+  X
+} from "lucide-react";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { useState } from "react";
 import Image from "next/image";
 
-// Define types
-interface User {
-  name: string;
-  profile: string;
-  about: string;
-  title: string;
-  subtitle: string;
-  linkedIn: string;
-  instagram: string;
-  github: string;
-  email: string;
+// ---------------------------------------------------------
+// Helper components & Hooks
+// ---------------------------------------------------------
+
+function CountUpNumber({ value, suffix = "" }: { value: string; suffix?: string }) {
+  const numValue = parseInt(value.replace(/[^0-9]/g, ""), 10);
+  const [count, setCount] = useState(0);
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
+
+  useEffect(() => {
+    if (isInView) {
+      let start = 0;
+      const duration = 1200; // ms
+      const steps = 30;
+      const stepTime = duration / steps;
+      const increment = numValue / steps;
+
+      const timer = setInterval(() => {
+        start += increment;
+        if (start >= numValue) {
+          setCount(numValue);
+          clearInterval(timer);
+        } else {
+          setCount(Math.floor(start));
+        }
+      }, stepTime);
+
+      return () => clearInterval(timer);
+    }
+  }, [isInView, numValue]);
+
+  return (
+    <span ref={ref} className="font-mono">
+      {count}
+      {suffix}
+    </span>
+  );
 }
 
-interface Project {
-  projectNameAndTechStack: string;
-  link: string;
-  priority: string | undefined;
-  description: string;
-  techStack: string[];
-  detailedDescription?: string;
-}
+function CopyableText({ text, label }: { text: string; label: string }) {
+  const [copied, setCopied] = useState(false);
 
-interface Experience {
-  company: string;
-  location: string;
-  role: string;
-  dates: string;
-  project: {
-    name: string;
-    tech: string[];
-  };
-  responsibilities: string[];
-}
-
-// Sample data
-const userData: User = {
-  name: "Prem Prakash Gupta",
-  profile: "Full Stack Developer",
-  about: "I specialize in building responsive web applications with modern technologies. With a passion for clean code and intuitive user experiences, I transform ideas into digital reality.",
-  title: "Hello, I'm Prem",
-  subtitle: "Full Stack Developer & UI/UX Enthusiast",
-  linkedIn: "https://linkedin.com/in/premprakashgupta-",
-  instagram: "https://instagram.com",
-  github: "https://github.com/premprakashgupta",
-  email: "prem.com0011@gmail.com"
-};
-
-const techColorMap: { [key: string]: string } = {
-  'MERN': 'bg-green-200 text-green-800',
-  'Socket.IO': 'bg-blue-200 text-blue-800',
-  'Cloudinary': 'bg-purple-200 text-purple-800',
-  'React': 'bg-blue-300 text-blue-900',
-  'jsPDF': 'bg-red-200 text-red-800',
-  'Flutter': 'bg-cyan-200 text-cyan-800',
-  'Firebase': 'bg-yellow-200 text-yellow-800',
-  'Dialogflow': 'bg-orange-200 text-orange-800',
-  'Node.js': 'bg-green-300 text-green-900',
-  'REST API': 'bg-gray-300 text-gray-900',
-  'Razorpay': 'bg-blue-400 text-blue-900',
-  'HTML': 'bg-red-300 text-red-900',
-  'CSS': 'bg-blue-300 text-blue-900',
-  'JavaScript': 'bg-yellow-300 text-yellow-900',
-};
-
-const projectsData: Project[] = [
-  {
-    "projectNameAndTechStack": "WhatsApp Clone – MongoDB, Express.js, React, Node.js, Socket.IO",
-    "link": "https://github.com/premprakashgupta/whatsApp_clone_Mern",
-    "priority": undefined,
-    "description": "A real-time chat application mimicking WhatsApp's core features. Users can send and receive messages instantly, thanks to the power of Socket.IO and the MERN stack.",
-    "detailedDescription": "Real-time chat application\nMimics WhatsApp features\nInstant message sending and receiving\nUtilizes Socket.IO for real-time communication",
-    "techStack": ["MongoDB", "Express.js", "React", "Node.js", "Socket.IO"]
-  },
-  {
-    "projectNameAndTechStack": "Instagram Clone – MongoDB, Express.js, React, Node.js, Cloudinary",
-    "link": "https://github.com/premprakashgupta/preminsta",
-    "priority": undefined,
-    "description": "A full-featured Instagram clone where users can register, post photos, follow other users, and receive notifications. Built with the MERN stack and Cloudinary for image management.",
-    "detailedDescription": "Full-featured Instagram clone\nUser registration and photo posting\nFollow other users and receive notifications\nCloudinary for image management",
-    "techStack": ["MongoDB", "Express.js", "React", "Node.js", "Cloudinary"]
-  },
-  {
-    "projectNameAndTechStack": "Resume Builder – React, jsPDF",
-    "link": "https://resume4u.netlify.app/resume",
-    "priority": undefined,
-    "description": "A simple yet powerful resume builder that allows users to create professional resumes and export them as PDF or image files. Built with React and jsPDF.",
-    "detailedDescription": "Simple yet powerful resume builder\nCreate professional resumes\nExport as PDF or image files",
-    "techStack": ["React", "jsPDF"]
-  },
-  {
-    "projectNameAndTechStack": "Museuo Bharat – Flutter, Firebase, Dialogflow",
-    "link": "client project",
-    "priority": undefined,
-    "description": "A mobile application for booking museum tickets. It features a chatbot powered by Dialogflow to assist users with booking and information gathering. Built with Flutter and Firebase.",
-    "detailedDescription": "Mobile application for booking museum tickets\nFeatures a chatbot powered by Dialogflow\nAssists users with booking and information gathering",
-    "techStack": ["Flutter", "Firebase", "Dialogflow"]
-  },
-  {
-    "projectNameAndTechStack": "Chikit (Medicine SaaS) – MongoDB, Express.js, React, Node.js",
-    "link": "https://chikit360.thundergits.com/",
-    "priority": "highlighted",
-    "description": "A multi-tenant SaaS platform for managing medical stores. It includes features like inventory management, billing, and payment gateway integration. Built with the MERN stack.",
-    "detailedDescription": "SaaS multi-tenant\nRole-based authentication\nRazorpay payment integration\nSubscription model\nInventory management\nMedicine management\nSale management\nExpiry alert and minimum stock alert\nBarcode scanner",
-    "techStack": ["MongoDB", "Express.js", "React", "Node.js"]
-  },
-  {
-    "projectNameAndTechStack": "Edugits – MongoDB, Express.js, React, Node.js",
-    "link": "https://edugits.thundergits.com/",
-    "priority": "highlighted",
-    "description": "A comprehensive school management system with features like class creation, student management, fee management, and subscription-based services. Built with the MERN stack.",
-    "detailedDescription": "SaaS multi-tenant\nRole-based authentication\nRazorpay payment integration\nSubscription model\nClass, subject, exam, result, student, admit card management system",
-    "techStack": ["MongoDB", "Express.js", "React", "Node.js"]
-  },
-  {
-    "projectNameAndTechStack": "Sticky Notes App – MongoDB, Express.js, React, Node.js",
-    "link": "https://github.com/premprakashgupta/stickyNote",
-    "priority": undefined,
-    "description": "A simple and intuitive sticky notes application that allows users to create and manage notes from anywhere. Built with the MERN stack for seamless data synchronization.",
-    "detailedDescription": "Simple and intuitive sticky notes application\nCreate and manage notes from anywhere\nSeamless data synchronization",
-    "techStack": ["MongoDB", "Express.js", "React", "Node.js"]
-  },
-  {
-    "projectNameAndTechStack": "Flutter E-commerce App – Flutter, REST API",
-    "link": "https://github.com/premprakashgupta/e_commerce_using_flutter",
-    "priority": undefined,
-    "description": "A beautiful and functional e-commerce application built with Flutter. It communicates with a backend server through a REST API and uses Firebase for authentication and other services.",
-    "detailedDescription": "Beautiful and functional e-commerce application\nCommunicates with backend server through REST API\nUses Firebase for authentication and other services",
-    "techStack": ["Flutter", "REST API", "Firebase"]
-  },
-  {
-    "projectNameAndTechStack": "Code Discussion Forum – Flutter, Firebase",
-    "link": "",
-    "priority": undefined,
-    "description": "A mobile application for developers to discuss and share code snippets. It features real-time chat and code highlighting. Built with Flutter and Firebase.",
-    "detailedDescription": "Mobile application for developers\nDiscuss and share code snippets\nReal-time chat\nCode highlighting",
-    "techStack": ["Flutter", "Firebase"]
-  },
-  {
-    "projectNameAndTechStack": "Attendance Manager – Flutter, Firebase",
-    "link": "https://github.com/premprakashgupta/attendance",
-    "priority": undefined,
-    "description": "A mobile application for managing student attendance. It also includes features for conducting tests and assessments. Built with Flutter and Firebase.",
-    "detailedDescription": "Mobile application for managing student attendance\nIncludes features for conducting tests and assessments",
-    "techStack": ["Flutter", "Firebase"]
-  },
-  {
-    "projectNameAndTechStack": "Women Safety App – Flutter, SMS",
-    "link": "https://github.com/premprakashgupta/women-safety-app",
-    "priority": undefined,
-    "description": "A mobile application designed for women's safety. It can send emergency alerts with location to pre-defined contacts via SMS. Built with Flutter.",
-    "detailedDescription": "Mobile application designed for women's safety\nSends emergency alerts with location to pre-defined contacts via SMS",
-    "techStack": ["Flutter", "SMS"]
-  },
-  {
-    "projectNameAndTechStack": "Coding Pandas Platform – Node.js",
-    "link": "https://codingpandas.in/",
-    "priority": "most highlighted",
-    "description": "A competitive programming platform similar to LeetCode, where users can solve coding problems and participate in contests. The backend is powered by Node.js.",
-    "detailedDescription": "special: 85% backend developed by me\nfeature:\nblog management with role based flow like edtor write, admin approved , super admin can do anything\nleet code like question management\nuser management\nreal time notification using ssr\ncompilar to compile question submission\nR2 for file uoload",
-    "techStack": ["Next.js", "Node.js", "R2"]
-  },
-  {
-    "projectNameAndTechStack": "Pasuseva – MERN, Razorpay",
-    "link": "https://pasuseva.in/",
-    "priority": "highlighted",
-    "description": "A platform for managing loans for animal husbandry. It includes features for loan application, processing, and repayment, with Razorpay integration for payments.",
-    "detailedDescription": "yojana application review, job application review\npayment integration with razor pay\nemail integration using nodemailer and send grid\nimage upload using cloudinary",
-    "techStack": ["HTML", "Tailwind CSS", "JavaScript", "React.js", "TypeScript", "Node.js", "Razorpay", "Nodemailer", "SendGrid", "Cloudinary"]
-  },
-  {
-    "projectNameAndTechStack": "Loqo AI – MERN",
-    "link": "https://loqo.ai/",
-    "priority": "highlighted",
-    "description": "A streaming platform for spiritual videos, similar to YouTube. It features a vast library of content like Ramayan and Mahabharat. Built with the MERN stack.",
-    "detailedDescription": "stream video using HSL and videojs\ngoogle ads integration",
-    "techStack": ["Next.js", "HSL", "Video.js", "Google Ads"]
-  },
-  {
-    "projectNameAndTechStack": "Fruits E-commerce (Sunshine) – MongoDB, Express.js, React, Node.js",
-    "link": "https://sunshine-server.onrender.com/",
-    "priority": undefined,
-    "description": "A simple e-commerce website for selling fresh fruits. It includes basic features like product listing, shopping cart, and checkout. Built with the MERN stack.",
-    "detailedDescription": "Simple e-commerce website for selling fresh fruits\nIncludes basic features like product listing, shopping cart, and checkout",
-    "techStack": ["MongoDB", "Express.js", "React", "Node.js"]
-  },
-  {
-    "projectNameAndTechStack": "Web Editor",
-    "link": "https://webeditor4u.netlify.app/",
-    "priority": undefined,
-    "description": "A simple web-based text editor with basic formatting features, similar to Notepad. A handy tool for quick notes and code snippets.",
-    "detailedDescription": "Simple web-based text editor\nBasic formatting features\nSimilar to Notepad\nHandy tool for quick notes and code snippets",
-    "techStack": ["HTML", "CSS", "JavaScript"]
-  },
-  {
-    "projectNameAndTechStack": "Enersole Bio Gas site",
-    "link": "https://www.enersolbiopower.com/",
-    "priority": "highlighted",
-    "description": "A website for a biogas company to showcase their products and services. It provides information about the company and its offerings.",
-    "detailedDescription": "Website for a biogas company\nShowcases products and services\nProvides information about the company and its offerings",
-    "techStack": ["HTML", "CSS", "JavaScript"]
-  },
-  {
-    "projectNameAndTechStack": "P-Square Pharmacy – MongoDB, Express.js, React, Node.js",
-    "link": "https://chikit360-psquare.thundergits.com/signin",
-    "priority": "highlighted",
-    "description": "A medicine management system for an individual medical store. It helps in managing inventory, sales, and customer records.",
-    "detailedDescription": "Role-based authentication\nRazorpay payment integration\nSubscription model\nInventory management\nMedicine management\nSale management\nExpiry alert and minimum stock alert\nBarcode scanner",
-    "techStack": ["MongoDB", "Express.js", "React", "Node.js"]
-  },
-  {
-    "projectNameAndTechStack": "Carpet Decore site",
-    "link": "https://carpetsdecor.com/",
-    "priority": "highlighted",
-    "description": "A website to showcase a client's carpet products. It features a beautiful gallery and product details.",
-    "detailedDescription": "Website to showcase client's carpet products\nFeatures a beautiful gallery and product details",
-    "techStack": ["HTML", "CSS", "JavaScript"]
-  },
-  {
-    "projectNameAndTechStack": "Netajee ",
-    "link": "https://netajee.in/",
-    "priority": "highlighted",
-    "description": "An election management application with an admin panel. It helps in managing campaigns, voters, and election results.",
-    "detailedDescription": "manage article, news, press releas, volunteer, track volunteer, KYC of voter,\nmember ship card\npolls for voting guess for leader",
-    "techStack": ["React", "Node.js", "MongoDB", "React Native"]
-  },
-  {
-    "projectNameAndTechStack": "Volcanic Classes – MongoDB, Express.js, React, Node.js",
-    "link": "",
-    "priority": "highlighted",
-    "description": "An online learning platform for students. It provides video lectures, notes, and quizzes on various subjects.",
-    "techStack": ["MongoDB", "Express.js", "React", "Node.js"]
-  }
-].sort((a, b) => {
-  if (a.priority === "highlighted" && b.priority !== "highlighted") {
-    return -1;
-  } else if (a.priority !== "highlighted" && b.priority === "highlighted") {
-    return 1;
-  } else {
-    return 0;
-  }
-});
-
-const experience: Experience[] = [
-  {
-    company: "Systellar Technologies Pvt. Ltd.",
-    location: "Gurugram, Haryana",
-    role: "Full Stack Developer",
-    dates: "Apr 2024 – Mar 2025",
-    project: {
-      name: "Praesentia",
-      tech: ["Node.js", "MySQL"]
-    },
-    responsibilities: [
-      "Built scalable backend infrastructure using Node.js and MySQL",
-      "Mentored 3 interns in MERN Stack and UI design",
-      "Collaborated across design, development, and QA teams"
-    ]
-  },
-  {
-    company: "MittArv Technology Pvt. Ltd.",
-    location: "Hyderabad",
-    role: "Full Stack Developer Intern",
-    dates: "Oct 2023 – Mar 2024",
-    project: {
-      name: "MittArv",
-      tech: ["React.js", "Node.js", "MySQL", "Flutter"]
-    },
-    responsibilities: [
-      "Developed responsive web interfaces in React.js",
-      "Integrated APIs and optimized frontend performance",
-      "Debugged and enhanced cross-platform Flutter app"
-    ]
-  }
-];
-
-const skills = [
-  { name: "React", imageSrc: "/skill_logo/React-icon.png", percentage: 90, color: "blue" },
-  { name: "Next.js", imageSrc: "/skill_logo/next-js.svg", percentage: 85, color: "black" },
-  { name: "Node.js", imageSrc: "/skill_logo/Node.js_logo.png", percentage: 88, color: "green" },
-  { name: "TypeScript", imageSrc: "/skill_logo/typescript.png", percentage: 80, color: "blue" },
-  { name: "Tailwind CSS", imageSrc: "/skill_logo/Tailwind_CSS_Logo.png", percentage: 92, color: "cyan" },
-  { name: "MongoDB", imageSrc: "/skill_logo/MongoDB_Logo.png", percentage: 78, color: "green" },
-  { name: "Flutter", imageSrc: "/skill_logo/flutter_logo.png", percentage: 75, color: "blue" },
-  { name: "Firebase", imageSrc: "/skill_logo/firebase.png", percentage: 70, color: "orange" },
-  { name: "Express.js", imageSrc: "/skill_logo/Expressjs.png", percentage: 80, color: "gray" },
-  { name: "MySQL", imageSrc: "/skill_logo/mysql_logo.svg", percentage: 70, color: "blue" },
-  { name: "NestJS", imageSrc: "/skill_logo/NestJS.svg", percentage: 75, color: "red" },
-];
-
-export default function Portfolio() {
-  const [activeTab, setActiveTab] = useState("projects");
-
-  const handleScroll = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error("Failed to copy text", err);
     }
   };
 
   return (
-    <div className="min-h-screen">
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-gray-900 bg-opacity-50 backdrop-blur-md border-b border-gray-700 text-white">
-        <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-          <div className="flex items-center gap-3">
-            <div className="w-5 h-5 bg-blue-400 rounded-full animate-pulse"></div>
-            <h1 className="text-md md:text-2xl font-bold text-blue-400 tracking-wide">Prem Prakash Gupta</h1>
-            <span className="hidden md:block text-gray-400">/</span>
-            <span className="hidden md:block text-gray-300">{userData.profile}</span>
-          </div>
+    <div className="flex flex-col items-center sm:items-start">
+      <span className="text-xs font-semibold text-[#6B7280] uppercase tracking-wider mb-1">{label}</span>
+      <div className="flex items-center gap-2 group max-w-full">
+        <span className="text-[#111827] font-medium text-sm sm:text-base md:text-lg break-all">{text}</span>
+        <button 
+          onClick={handleCopy}
+          className="p-1.5 rounded-lg border border-[#E5E7EB] bg-white text-[#6B7280] hover:text-[#2563EB] hover:border-[#2563EB] transition-colors flex-shrink-0"
+          title={`Copy ${label}`}
+        >
+          {copied ? <Check size={14} className="text-green-600" /> : <Copy size={14} />}
+        </button>
+      </div>
+    </div>
+  );
+}
 
-          <nav className="hidden md:flex gap-6">
-            <a onClick={() => handleScroll('about')} className="text-gray-300 hover:text-blue-400 transition-colors cursor-pointer relative group">About<span className="absolute left-0 bottom-0 w-0 h-0.5 bg-blue-400 group-hover:w-full transition-all duration-300"></span></a>
-            <a onClick={() => handleScroll('experience')} className="text-gray-300 hover:text-blue-400 transition-colors cursor-pointer relative group">Experience<span className="absolute left-0 bottom-0 w-0 h-0.5 bg-blue-400 group-hover:w-full transition-all duration-300"></span></a>
-            <a onClick={() => handleScroll('projects')} className="text-gray-300 hover:text-blue-400 transition-colors cursor-pointer relative group">Projects<span className="absolute left-0 bottom-0 w-0 h-0.5 bg-blue-400 group-hover:w-full transition-all duration-300"></span></a>
-            <a onClick={() => handleScroll('skills')} className="text-gray-300 hover:text-blue-400 transition-colors cursor-pointer relative group">Skills<span className="absolute left-0 bottom-0 w-0 h-0.5 bg-blue-400 group-hover:w-full transition-all duration-300"></span></a>
-            <a onClick={() => handleScroll('contact')} className="text-gray-300 hover:text-blue-400 transition-colors cursor-pointer relative group">Contact<span className="absolute left-0 bottom-0 w-0 h-0.5 bg-blue-400 group-hover:w-full transition-all duration-300"></span></a>
+// ---------------------------------------------------------
+// Data Configurations
+// ---------------------------------------------------------
+
+const STATS = [
+  { value: "2", label: "Years Experience", suffix: "+" },
+  { value: "3", label: "Companies", suffix: "" },
+  { value: "10", label: "Live Products", suffix: "+" },
+  { value: "3000", label: "Users Served", suffix: "+" }
+];
+
+const EXPERIENCES = [
+  {
+    role: "Full Stack Developer",
+    company: "Thundergits Consultancy Pvt. Ltd.",
+    location: "Remote",
+    dates: "Apr 2025 – Present",
+    bullets: [
+      "Built a medical e-commerce + warehouse ERP with 250+ REST APIs serving 3,000+ active users",
+      "Implemented JWT auth, RBAC, multi-tenant architecture — reduced unauthorised access to zero across 5+ tenants",
+      "AWS EC2 + S3 deployment with Nginx + PM2 — reduced server downtime by 80%"
+    ],
+    tech: ["Node.js", "MySQL", "Prisma", "React", "AWS", "Docker"]
+  },
+  {
+    role: "Full Stack Developer",
+    company: "Systellar Technologies Pvt. Ltd.",
+    location: "Gurugram",
+    dates: "Apr 2024 – Mar 2025",
+    bullets: [
+      "Built full backend for Praesentia (attendance platform, 50+ organisations) — improved data accuracy by 98%",
+      "Improved API response time by 35% by rewriting slow queries and restructuring 4 core modules",
+      "Built 20+ reusable React components; mentored 3 junior developers in React best practices"
+    ],
+    tech: ["Node.js", "MySQL", "React", "REST APIs"]
+  },
+  {
+    role: "Full Stack Developer",
+    company: "MittArv Technology Pvt. Ltd.",
+    location: "Remote",
+    dates: "Oct 2023 – Mar 2024",
+    bullets: [
+      "Built 10+ reusable React components and REST API integrations — improved page load time by 25%",
+      "Fixed critical Flutter bugs — reduced crash frequency by 45%"
+    ],
+    tech: ["React", "Node.js", "Flutter", "MySQL"]
+  }
+];
+
+const PROJECTS = [
+  {
+    title: "PharmaSuite ERP",
+    featured: true,
+    statsBadge: "3,000+ active users",
+    problem: "Medical store networks needed a unified e-commerce + warehouse management system",
+    tech: ["Node.js", "MySQL", "Prisma", "React", "AWS EC2", "S3"],
+    live: "",
+    bgGradient: "from-blue-500 to-indigo-600"
+  },
+  {
+    title: "Thikana 360",
+    featured: false,
+    problem: "PG/Hostel accommodation finder and management SaaS with digital tenant onboarding",
+    tech: ["React.js", "Node.js", "Express", "MongoDB", "Tailwind CSS"],
+    live: "",
+    bgGradient: "from-emerald-500 to-teal-600"
+  },
+  {
+    title: "Bhakti Villas",
+    featured: false,
+    problem: "Luxury resort reservation platform with interactive gallery and booking workflow",
+    tech: ["Next.js", "Tailwind CSS", "Node.js", "Express", "Nginx"],
+    live: "",
+    bgGradient: "from-amber-500 to-orange-600"
+  },
+  {
+    title: "Edugits",
+    featured: false,
+    problem: "School management SaaS — classes, fees, results, admit cards",
+    tech: ["MongoDB", "Express", "React", "Node.js", "Razorpay"],
+    live: "",
+    bgGradient: "from-purple-500 to-pink-600"
+  },
+  {
+    title: "Coding Pandas",
+    featured: false,
+    statsBadge: "60% API throughput improvement",
+    problem: "Competitive programming platform with online compiler and real-time leaderboard",
+    tech: ["Next.js", "Node.js", "BullMQ", "SSE", "R2"],
+    live: "https://codingpandas.in",
+    bgGradient: "from-orange-500 to-red-600"
+  },
+  {
+    title: "Loqo AI",
+    featured: false,
+    problem: "Spiritual video streaming platform with HLS and Google Ads integration",
+    tech: ["Next.js", "HLS", "Video.js", "Google Ads"],
+    live: "",
+    bgGradient: "from-sky-500 to-blue-600"
+  }
+];
+
+const SKILL_GROUPS = [
+  {
+    title: "Frontend",
+    skills: ["React.js", "Next.js", "Redux Toolkit", "Tailwind CSS", "TypeScript", "HTML5", "CSS3"]
+  },
+  {
+    title: "Backend",
+    skills: ["Node.js", "Express.js", "NestJS", "REST APIs", "Socket.IO", "JWT", "BullMQ"]
+  },
+  {
+    title: "Databases",
+    skills: ["MongoDB", "MySQL", "PostgreSQL", "Prisma ORM", "Firebase"]
+  },
+  {
+    title: "Cloud & Tools",
+    skills: ["AWS (EC2, S3)", "Docker", "Nginx", "PM2", "Git", "Jest", "Postman", "CI/CD"]
+  }
+];
+
+export default function Portfolio() {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToSection = (id: string) => {
+    setMobileMenuOpen(false);
+    const element = document.getElementById(id);
+    if (element) {
+      const offset = 80;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      });
+    }
+  };
+
+  return (
+    <div className="min-h-screen font-sans selection:bg-[#2563EB] selection:text-white">
+      {/* NAVBAR */}
+      <header 
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 ${
+          isScrolled 
+            ? "bg-white border-b border-[#E5E7EB] py-4" 
+            : "bg-transparent py-5"
+        }`}
+      >
+        <div className="max-w-[1100px] mx-auto px-6 flex items-center justify-between">
+          {/* Logo */}
+          <button 
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="flex items-center gap-2 group focus:outline-none"
+          >
+            <div className="w-10 h-10 rounded-xl overflow-hidden border border-[#E5E7EB] bg-[#2563EB]/10 flex items-center justify-center font-bold text-xl text-[#2563EB] transition-all duration-300">
+              <Image 
+                src="/avatar.png" 
+                alt="Prem Prakash Gupta Logo" 
+                width={40} 
+                height={40}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <span className="font-bold text-[#111827] text-lg tracking-tight group-hover:text-[#2563EB] transition-colors hidden sm:inline">
+              Prem Prakash
+            </span>
+          </button>
+
+          {/* Nav Links - Desktop */}
+          <nav className="hidden md:flex items-center gap-8">
+            {["About", "Experience", "Projects", "Skills", "Contact"].map((item) => (
+              <button
+                key={item}
+                onClick={() => scrollToSection(item.toLowerCase())}
+                className="text-[#6B7280] hover:text-[#111827] font-medium text-sm transition-colors relative py-1 focus:outline-none"
+              >
+                {item}
+              </button>
+            ))}
           </nav>
 
-          <Button className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg transform hover:scale-105 transition-transform duration-300">
-            <a download href="./resume/resume_prem_prakash.docx" className="text-xs md:text-lg" >Download CV</a>
-          </Button>
+          {/* Right Solid Button */}
+          <div className="hidden md:block">
+            <a 
+              href="/resume/Prem_Prakash_Gupta__Resume.pdf" 
+              download="Prem_Prakash_Gupta_Resume.pdf"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#2563EB] hover:bg-[#1d4ed8] text-white font-semibold text-sm rounded-xl transition-all shadow-sm hover:shadow active:scale-95"
+            >
+              <FileText size={16} />
+              Download CV
+            </a>
+          </div>
+
+          {/* Mobile menu trigger */}
+          <button 
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden p-2 text-[#6B7280] hover:text-[#111827] transition-colors focus:outline-none"
+          >
+            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
+
+        {/* Mobile Navigation Drawer */}
+        {mobileMenuOpen && (
+          <motion.div 
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="absolute top-full left-0 right-0 bg-white border-b border-[#E5E7EB] shadow-lg p-6 flex flex-col gap-4 md:hidden"
+          >
+            {["About", "Experience", "Projects", "Skills", "Contact"].map((item) => (
+              <button
+                key={item}
+                onClick={() => scrollToSection(item.toLowerCase())}
+                className="text-[#6B7280] hover:text-[#111827] font-semibold text-left py-2 border-b border-[#F3F4F6]"
+              >
+                {item}
+              </button>
+            ))}
+            <a 
+              href="/resume/Prem_Prakash_Gupta__Resume.pdf" 
+              download="Prem_Prakash_Gupta_Resume.pdf"
+              className="w-full text-center py-3 bg-[#2563EB] hover:bg-[#1d4ed8] text-white font-semibold rounded-xl mt-2 block"
+            >
+              Download CV
+            </a>
+          </motion.div>
+        )}
       </header>
 
-      {/* Hero Section */}
-      <section className="relative py-16 md:py-24 text-white overflow-hidden">
-        {/* Animated Background */}
-        <div className="absolute inset-0 z-0" style={{
-          background: 'radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px), radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px)',
-          backgroundSize: '40px 40px',
-          backgroundPosition: '0 0, 20px 20px',
-          animation: 'moveBackground 20s linear infinite'
-        }}></div>
-        <style jsx>{`
-          @keyframes moveBackground {
-            from { background-position: 0 0, 20px 20px; }
-            to { background-position: 40px 40px, 60px 60px; }
-          }
-        `}</style>
-        <div className="absolute inset-0 z-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 opacity-90"></div>
+      {/* SECTION 1 — HERO */}
+      <section id="about" className="pt-32 pb-20 md:pt-40 md:pb-28 max-w-[1100px] mx-auto px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+          
+          {/* Left Column (60%) */}
+          <div className="lg:col-span-7 flex flex-col items-start text-left">
+            {/* Opportunities Badge */}
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-100 text-emerald-800 text-xs font-semibold mb-6">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              Open to opportunities
+            </div>
 
-        <div className="container mx-auto px-4 relative z-10 flex flex-col md:flex-row items-center justify-between">
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="md:w-1/2 mb-10 md:mb-0 text-center md:text-left"
-          >
-            <h1 className="text-4xl md:text-6xl font-extrabold leading-tight mb-4">
-              Hello, I&apos;m <span className="text-blue-400">Prem</span>
+            {/* Name */}
+            <h1 
+              style={{ fontSize: "clamp(42px, 6.5vw, 72px)" }}
+              className="font-extrabold text-[#111827] tracking-tight leading-[1.05] mb-6"
+            >
+              PREM PRAKASH GUPTA
             </h1>
-            <h2 className="text-2xl md:text-4xl font-semibold text-gray-300 mb-6">
-              Full Stack Developer & UI/UX Enthusiast
-            </h2>
-            <p className="text-lg text-gray-400 mb-8 max-w-lg mx-auto md:mx-0">
-              {userData.about}
+
+            {/* Role line */}
+            <p className="text-lg md:text-xl font-semibold text-[#2563EB] mb-4">
+              Full Stack Developer (MERN) · 2+ Years · 3 Companies · 10+ Live Products
             </p>
 
-            <div className="flex flex-wrap gap-4 justify-center md:justify-start">
-              <Button
-                size="lg"
-                className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg transform hover:scale-105 transition-transform duration-300"
-                onClick={() => handleScroll('projects')}
+            {/* Value Proposition */}
+            <p className="text-[#6B7280] text-lg leading-relaxed mb-8 max-w-xl">
+              I build scalable SaaS backends and clean React UIs — shipped to 3,000+ real users.
+            </p>
+
+            {/* Action Buttons */}
+            <div className="flex flex-wrap gap-4 mb-8">
+              <button 
+                onClick={() => scrollToSection("projects")}
+                className="inline-flex items-center gap-2 px-6 py-3.5 bg-[#2563EB] hover:bg-[#1d4ed8] text-white font-semibold text-base rounded-xl transition-all shadow-sm hover:shadow active:scale-95"
               >
-                View Projects <MoveRight className="ml-2" size={18} />
-              </Button>
-              <Button
-                variant="outline"
-                size="lg"
-                className="border-blue-400 text-blue-400 hover:bg-blue-900 hover:text-white shadow-lg transform hover:scale-105 transition-transform duration-300"
-                onClick={() => handleScroll('contact')}
+                View My Work
+                <ArrowRight size={18} />
+              </button>
+              <a 
+                href="/resume/Prem_Prakash_Gupta__Resume.pdf" 
+                download="Prem_Prakash_Gupta_Resume.pdf"
+                className="inline-flex items-center gap-2 px-6 py-3.5 border border-[#E5E7EB] bg-white hover:bg-[#F9FAFB] text-[#111827] font-semibold text-base rounded-xl transition-all active:scale-95"
               >
-                Contact Me
-              </Button>
+                Download CV
+              </a>
             </div>
 
-            <div className="mt-10 flex gap-4 justify-center md:justify-start">
-              {userData.linkedIn && (
-                <a
-                  href={userData.linkedIn}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-gray-800 p-3 rounded-full shadow-md hover:bg-blue-700 transition-colors duration-300"
-                >
-                  <Linkedin className="text-blue-400" size={24} />
-                </a>
-              )}
-
-              {userData.github && (
-                <a
-                  href={userData.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-gray-800 p-3 rounded-full shadow-md hover:bg-gray-700 transition-colors duration-300"
-                >
-                  <Github className="text-gray-400" size={24} />
-                </a>
-              )}
-
-              {userData.instagram && (
-                <a
-                  href={userData.instagram}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-gray-800 p-3 rounded-full shadow-md hover:bg-pink-700 transition-colors duration-300"
-                >
-                  <Instagram className="text-pink-400" size={24} />
-                </a>
-              )}
-
-              {userData.email && (
-                <a
-                  href={`mailto:${userData.email}`}
-                  className="bg-gray-800 p-3 rounded-full shadow-md hover:bg-red-700 transition-colors duration-300"
-                >
-                  <Mail className="text-red-400" size={24} />
-                </a>
-              )}
+            {/* Social Links */}
+            <div className="flex items-center gap-5">
+              <a 
+                href="https://github.com/premprakashgupta" 
+                target="_blank" 
+                rel="noreferrer" 
+                className="text-[#6B7280] hover:text-[#111827] transition-colors"
+                aria-label="GitHub"
+              >
+                <Github size={22} />
+              </a>
+              <a 
+                href="https://www.linkedin.com/in/premprakashgupta-/" 
+                target="_blank" 
+                rel="noreferrer" 
+                className="text-[#6B7280] hover:text-[#2563EB] transition-colors"
+                aria-label="LinkedIn"
+              >
+                <Linkedin size={22} />
+              </a>
+              <a 
+                href="mailto:prem.com0011@gmail.com" 
+                className="text-[#6B7280] hover:text-red-500 transition-colors"
+                aria-label="Email"
+              >
+                <Mail size={22} />
+              </a>
             </div>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-            className="md:w-1/2 flex justify-center md:justify-end relative"
-          >
-            {/* Code Snippet / Terminal */}
-            <div className="relative w-[300px] sm:w-full max-w-md bg-gray-800 rounded-lg shadow-xl overflow-hidden border border-gray-700">
-              <div className="flex items-center px-4 py-2 bg-gray-700">
-                <div className="flex space-x-1.5">
-                  <span className="w-3 h-3 bg-red-500 rounded-full"></span>
-                  <span className="w-3 h-3 bg-yellow-500 rounded-full"></span>
-                  <span className="w-3 h-3 bg-green-500 rounded-full"></span>
+          {/* Right Column (40%) - Terminal */}
+          <div className="lg:col-span-5 flex justify-center w-full">
+            <div className="w-full max-w-md bg-[#1E1E2E] rounded-2xl shadow-xl border border-white/5 overflow-hidden flex flex-col">
+              {/* Terminal Window Header */}
+              <div className="flex items-center justify-between px-4 py-3 bg-[#151522] border-b border-white/5">
+                <div className="flex space-x-2">
+                  <span className="w-3 h-3 bg-[#FF5F56] rounded-full"></span>
+                  <span className="w-3 h-3 bg-[#FFBD2E] rounded-full"></span>
+                  <span className="w-3 h-3 bg-[#27C93F] rounded-full"></span>
                 </div>
-                <span className="ml-3 text-sm text-gray-300">terminal.js</span>
+                <div className="flex items-center gap-1.5 text-xs text-[#6B7280] font-mono">
+                  <Terminal size={12} />
+                  developer.js
+                </div>
+                <div className="w-10"></div>
               </div>
-              <pre className="p-4 text-sm font-mono text-green-400 overflow-auto h-64">
+              {/* Terminal Body */}
+              <pre 
+                style={{ fontFamily: "var(--font-jetbrains-mono), monospace" }}
+                className="p-6 text-sm text-[#CDD6F4] overflow-x-auto leading-relaxed"
+              >
                 <code>
-                  <span className="text-blue-400">const</span> <span className="text-yellow-300">developer</span> = {"{"}<br />
-                  &nbsp;&nbsp;name: <span className="text-green-400">&apos;Prem Prakash Gupta&apos;</span>,<br />
-                  &nbsp;&nbsp;skills: [<span className="text-purple-400">&apos;React&apos;</span>, <span className="text-purple-400">&apos;Next.js&apos;</span>, <span className="text-purple-400">&apos;Node.js&apos;</span>, <span className="text-purple-400">&apos;TypeScript&apos;</span>],<br />
-                  &nbsp;&nbsp;passion: <span className="text-green-400">&apos;Building innovative solutions&apos;</span>,<br />
-                  &nbsp;&nbsp;status: <span className="text-orange-400">&apos;Open for opportunities&apos;</span>,<br />
-                  {"}"};<br /><br />
-                  <span className="text-blue-400">function</span> <span className="text-yellow-300">connect</span>(dev) {"{"}<br />
-                  &nbsp;&nbsp;<span className="text-red-400">if</span> (dev.<span className="text-yellow-300">status</span> === <span className="text-orange-400">&apos;Open for opportunities&apos;</span>) {"{"}<br />
-                  &nbsp;&nbsp;&nbsp;&nbsp;dev.<span className="text-yellow-300">sayHello</span>();<br />
-                  &nbsp;&nbsp;{"}"}<br />
-                  {"}"}<br /><br />
-                  <span className="text-yellow-300">connect</span>(developer);
+                  <span className="text-[#F38BA8]">const</span> <span className="text-[#89B4FA]">developer</span> = <span className="text-[#A6E3A1]">{"{"}</span><br />
+                  &nbsp;&nbsp;name: <span className="text-[#A6E3A1]">&apos;Prem Prakash Gupta&apos;</span>,<br />
+                  &nbsp;&nbsp;role: <span className="text-[#A6E3A1]">&apos;Full Stack Engineer&apos;</span>,<br />
+                  &nbsp;&nbsp;experience: <span className="text-[#FAB387]">&apos;2+ Years&apos;</span>,<br />
+                  &nbsp;&nbsp;companies: <span className="text-[#FAB387]">3</span>,<br />
+                  &nbsp;&nbsp;status: <span className="text-[#A6E3A1]">&apos;Open to opportunities&apos;</span><br />
+                  <span className="text-[#A6E3A1]">{"}"}</span>;<br /><br />
+
+                  <span className="text-[#F38BA8]">function</span> <span className="text-[#89B4FA]">isReady</span><span className="text-[#F9E2AF]">(candidate)</span> <span className="text-[#A6E3A1]">{"{"}</span><br />
+                  &nbsp;&nbsp;<span className="text-[#F38BA8]">return</span> candidate.experience &gt;= <span className="text-[#FAB387]">&apos;2Y&apos;</span> <span className="text-[#F38BA8]">&amp;&amp;</span><br />
+                  &nbsp;&nbsp;&nbsp;&nbsp;candidate.status === <span className="text-[#A6E3A1]">&apos;Open to opportunities&apos;</span>;<br />
+                  <span className="text-[#A6E3A1]">{"}"}</span><br /><br />
+
+                  <span className="text-[#CBA6F7]">console</span>.<span className="text-[#89B4FA]">log</span><span className="text-[#F9E2AF]">(isReady(developer))</span>;<br />
+                  <span className="text-[#6C7086]">{"// Output: true"}</span>
                 </code>
               </pre>
             </div>
-            {/* Avatar overlaying the code snippet */}
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-              className="absolute -bottom-10 left-1/2 transform -translate-x-1/2 md:left-auto md:right-0 md:translate-x-0"
-            >
-              <Avatar className="w-32 h-32 md:w-44 md:h-44 border-4 border-blue-400 shadow-lg">
-                <AvatarImage src={profileImage} className="object-cover" />
-                <AvatarFallback className="bg-gray-200 text-gray-800">PP</AvatarFallback>
-              </Avatar>
-            </motion.div>
-          </motion.div>
+          </div>
+
         </div>
       </section>
 
-      {/* Experience Section */}
-      <section id="experience" className="py-16 bg-white bg-opacity-10">
-        <div className="container mx-auto px-4">
-          <TypographyH2 className="text-center mb-16" text="Professional Journey" />
-
-          <div className="relative max-w-4xl mx-auto">
-            {/* Timeline line */}
-            <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gradient-to-b from-blue-200 to-indigo-200"></div>
-
-            {experience.map((exp, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.2 }}
-                className={`mb-12 flex w-full flex-col md:flex-row ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
-                <div className={`w-full md:w-5/12 pl-10`}>
-                  <div className={`relative p-6 rounded-xl shadow-md bg-opacity-10 transform hover:scale-105 transition-transform duration-300 ${index % 2 === 0 ? 'bg-gradient-to-r from-blue-50 to-indigo-50' : 'bg-gradient-to-l from-blue-50 to-indigo-50'}`}>
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <h3 className="text-xl font-bold text-blue-400">{exp.role}</h3>
-                        <p className="text-gray-300 font-medium">{exp.company}</p>
-                        <p className="text-gray-400 text-sm">{exp.location} | {exp.dates}</p>
-                      </div>
-                      <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white text-xs px-3 py-1 rounded-full">
-                        Project: {exp.project.name}
-                      </div>
-                    </div>
-
-                    <div className="mt-4">
-                      <h4 className="font-semibold text-gray-300">Responsibilities:</h4>
-                      <ul className="mt-2 space-y-1">
-                        {exp.responsibilities.map((res, i) => (
-                          <li key={i} className="flex items-start">
-                            <div className="w-2 h-2 bg-blue-400 rounded-full mt-2 mr-2"></div>
-                            <span className="text-gray-400">{res}</span>
-                          </li>
-                        ))}
-                      </ul>
-
-                    </div>
-
-                    <div className="mt-4 flex flex-wrap gap-2">
-                      {exp.project.tech.map((tech, i) => (
-                        <span key={i} className={`text-xs px-2 py-1 rounded-full ${techColorMap[tech] || 'bg-gray-200 text-gray-800'}`}>
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                    {/* Timeline marker */}
-                    <div className={`absolute top-6 w-8 h-8 bg-gradient-to-r from-blue-600 to-indigo-700 rounded-full border-4 border-white animate-pulse ${index % 2 === 0 ? '-right-4' : '-left-4'}`}>
-                    </div>
-                  </div>
-
-
-                </div>
-              </motion.div>
+      {/* SECTION 2 — STATS STRIP */}
+      <section className="w-full bg-[#F3F4F6] py-8 border-y border-[#E5E7EB]">
+        <div className="max-w-[1100px] mx-auto px-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            {STATS.map((stat, idx) => (
+              <div key={idx} className="flex flex-col items-center">
+                <span className="text-3xl md:text-4xl font-extrabold text-[#111827] mb-1">
+                  <CountUpNumber value={stat.value} suffix={stat.suffix} />
+                </span>
+                <span className="text-xs md:text-sm font-medium text-[#6B7280] uppercase tracking-wider">
+                  {stat.label}
+                </span>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Skills Section */}
-      <section id="skills" className="py-16 bg-gradient-to-b from-white to-[#f0f7ff]">
-        <div className="container mx-auto px-4">
-          <TypographyH2 className="text-center mb-16" text="Technical Expertise" />
+      {/* SECTION 3 — EXPERIENCE */}
+      <section id="experience" className="py-20 max-w-[1100px] mx-auto px-6 border-b border-[#E5E7EB]">
+        <motion.div 
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="w-full"
+        >
+          <h2 className="text-3xl font-bold text-[#111827] mb-12 tracking-tight">Work Experience</h2>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8 max-w-5xl mx-auto">
-            {skills.map((skill, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.3, delay: index * 0.05 }}
-                className="flex flex-col items-center p-4 bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300"
-              >
-                <div className="w-16 h-16 mb-3 flex items-center justify-center">
-                  {skill.imageSrc ? (
-                    <Image
-                      src={skill.imageSrc}
-                      alt={skill.name}
-                      width={40}
-                      height={40}
-                      className="rounded-full"
-                    />
-                  ) : (
-                    <div className="w-10 h-10 bg-gray-200 rounded-full" />
-                  )}
+          <div className="space-y-16">
+            {EXPERIENCES.map((job, idx) => (
+              <div key={idx} className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 items-start">
+                
+                {/* Left: Company & Dates (4 cols) */}
+                <div className="md:col-span-4 flex flex-col">
+                  <span className="text-xs font-semibold text-[#6B7280] uppercase tracking-widest mb-1">{job.dates}</span>
+                  <h3 className="text-xl font-bold text-[#111827]">{job.company}</h3>
+                  <span className="text-sm font-medium text-[#6B7280] mt-1">{job.location}</span>
                 </div>
-                <span className="font-medium text-gray-800 text-center">{skill.name}</span>
-                <span className={`text-sm font-semibold text-${skill.color}-600`}>{skill.percentage}%</span>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* Projects Section */}
-      <section id="projects" className="py-16 bg-gradient-to-b from-[#f0f7ff] to-[#e6f0ff]">
-        <div className="container mx-auto px-4">
-          <TypographyH2 className="text-center mb-4" text="My Projects" />
-          <TypographyP className="text-center text-gray-600 max-w-2xl mx-auto mb-16">
-            A collection of my work, from personal projects to client work.
-          </TypographyP>
+                {/* Right: Role & Bullets & Badges (8 cols) */}
+                <div className="md:col-span-8 flex flex-col">
+                  <h4 className="text-lg font-bold text-[#2563EB] mb-3">{job.role}</h4>
+                  
+                  <ul className="space-y-3.5 mb-5 text-[#6B7280] text-[15px] leading-relaxed">
+                    {job.bullets.map((bullet, bIdx) => (
+                      <li key={bIdx} className="flex gap-2.5 items-start">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#2563EB] mt-2 flex-shrink-0" />
+                        <span>{bullet}</span>
+                      </li>
+                    ))}
+                  </ul>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {projectsData.map((project, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="bg-white rounded-xl shadow-lg p-6 flex flex-col justify-between transform hover:scale-105 hover:shadow-2xl transition-all duration-300 relative"
-              >
-                {project.priority === "highlighted" && (
-                  <div className="absolute top-2 right-2 w-3 h-3 bg-green-500 rounded-full flex items-center justify-center">
-                    <span className="relative flex h-3 w-3">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
-                    </span>
-                  </div>
-                )}
-                <div>
-                  <h3 className="font-bold text-gray-800 text-lg mb-2">{project.projectNameAndTechStack}</h3>
-                  <p className="text-sm text-gray-600 mb-2">{project.description}</p>
-                  {project.detailedDescription && (
-                    <>
-                      <h4 className="font-semibold text-gray-700 mt-2 mb-1">Key Features:</h4>
-                      <ul className="list-disc list-inside text-sm text-gray-600 mb-4 space-y-1">
-                        {project.detailedDescription.split('\n').map((item, i) => (
-                          <li key={i}>{item.trim().replace(/^- /, '')}</li>
-                        ))}
-                      </ul>
-                    </>
-                  )}
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {project.techStack.map((tech, i) => (
-                      <span key={i} className={`text-xs px-2 py-1 rounded-full ${techColorMap[tech] || 'bg-gray-200 text-gray-800'}`}>
-                        {tech}
+                  {/* Tech badges */}
+                  <div className="flex flex-wrap gap-2">
+                    {job.tech.map((badge, bIdx) => (
+                      <span 
+                        key={bIdx}
+                        className="px-3 py-1 bg-white border border-[#E5E7EB] text-[#111827] rounded-full text-xs font-semibold shadow-2xs"
+                      >
+                        {badge}
                       </span>
                     ))}
                   </div>
                 </div>
-                <div className="flex justify-between items-center">
-                  <span className={`text-xs px-2 py-1 rounded-full ${project.priority ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-700'}`}>
-                    {project.priority ? 'Highlighted' : 'Personal'}
-                  </span>
-                  <a
-                    href={project.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-600 hover:text-blue-800 text-sm flex items-center"
-                  >
-                    View Project <MoveRight className="ml-1" size={16} />
-                  </a>
+
+              </div>
+            ))}
+          </div>
+        </motion.div>
+      </section>
+
+      {/* SECTION 4 — SELECTED PROJECTS */}
+      <section id="projects" className="py-20 max-w-[1100px] mx-auto px-6 border-b border-[#E5E7EB]">
+        <motion.div 
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="w-full"
+        >
+          <div className="mb-12">
+            <h2 className="text-3xl font-bold text-[#111827] tracking-tight mb-2">Selected Work</h2>
+            <p className="text-lg text-[#6B7280]">Production applications used by real businesses</p>
+          </div>
+
+          <div className="space-y-8">
+            {PROJECTS.map((project, idx) => (
+              <motion.div 
+                key={idx}
+                whileHover={{ y: -3 }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
+                className="bg-white border border-[#E5E7EB] rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-shadow grid grid-cols-1 md:grid-cols-12"
+              >
+                {/* Left side: Simulated Screenshot Placeholder (4 cols) */}
+                <div className={`md:col-span-4 bg-gradient-to-br ${project.bgGradient} p-8 flex flex-col justify-between text-white relative min-h-[180px] md:min-h-full`}>
+                  <div className="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent pointer-events-none" />
+                  
+                  <div className="z-10 flex items-center justify-between w-full">
+                    <Code2 size={24} className="opacity-80" />
+                    {project.statsBadge && (
+                      <span className="text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 bg-white/20 rounded-full border border-white/20">
+                        {project.statsBadge}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="z-10">
+                    <h4 className="text-2xl font-bold tracking-tight mb-1">{project.title}</h4>
+                    <p className="text-white/70 text-xs font-mono">
+                      {project.live ? project.live.replace("https://", "").replace("http://", "") : "Confidential Project"}
+                    </p>
+                  </div>
                 </div>
+
+                {/* Right side: Project Details (8 cols) */}
+                <div className="md:col-span-8 p-6 md:p-8 flex flex-col justify-between">
+                  <div>
+                    {project.featured && (
+                      <span className="inline-flex items-center text-[10px] font-bold text-[#2563EB] uppercase tracking-widest mb-3">
+                        Featured Project
+                      </span>
+                    )}
+                    <h3 className="text-xl font-bold text-[#111827] mb-2">{project.title}</h3>
+                    <p className="text-[#6B7280] text-sm mb-4 leading-relaxed">
+                      <strong className="text-[#111827] font-semibold">Problem solved:</strong> {project.problem}
+                    </p>
+                  </div>
+
+                  <div className="flex flex-col gap-4">
+                    {/* Tech Badges */}
+                    <div className="flex flex-wrap gap-2">
+                      {project.tech.map((t, tIdx) => (
+                        <span 
+                          key={tIdx}
+                          className="px-2.5 py-1 bg-[#F3F4F6] text-[#6B7280] rounded-lg text-xs font-semibold"
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Links */}
+                    <div className="flex items-center gap-4 pt-2 border-t border-[#F3F4F6]">
+                      {project.live ? (
+                        <a 
+                          href={project.live} 
+                          target="_blank" 
+                          rel="noreferrer"
+                          className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#2563EB] hover:text-[#1d4ed8]"
+                        >
+                          Visit Application
+                          <ExternalLink size={14} />
+                        </a>
+                      ) : (
+                        <span className="text-xs font-semibold text-[#6B7280] uppercase tracking-wider bg-[#F3F4F6] px-2.5 py-1 rounded">
+                          NDA Protected (Private Codebase)
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
               </motion.div>
             ))}
           </div>
-        </div>
-      </section>
 
-      {/* Contact Section */}
-      <section id="contact" className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <TypographyH2 className="text-center mb-4" text="Get In Touch" />
-          <TypographyP className="text-center text-gray-600 max-w-2xl mx-auto mb-16"
-          >Have a project in mind or want to discuss opportunities? Feel free to reach out!</TypographyP>
-
-          <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8 shadow-sm bg-opacity-10"
+          {/* View all projects footer */}
+          <div className="mt-12 text-center">
+            <a 
+              href="https://github.com/premprakashgupta" 
+              target="_blank" 
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 text-[#2563EB] hover:text-[#1d4ed8] font-bold text-base transition-colors"
             >
-              <h3 className="text-xl font-bold text-gray-800 mb-6">Contact Information</h3>
-
-              <div className="space-y-4">
-                <div className="flex items-start">
-                  <Mail className="text-blue-600 mt-1 mr-4" size={20} />
-                  <div>
-                    <p className="text-gray-500 text-sm">Email</p>
-                    <p className="text-gray-800">{userData.email}</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start">
-                  <div className="mt-1 mr-4 w-5 h-5 bg-gray-300 rounded-full"></div>
-                  <div>
-                    <p className="text-gray-500 text-sm">Phone</p>
-                    <p className="text-gray-800">+91 9876543210</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start">
-                  <div className="mt-1 mr-4 w-5 h-5 bg-gray-300 rounded-full"></div>
-                  <div>
-                    <p className="text-gray-500 text-sm">Location</p>
-                    <p className="text-gray-800">Gurugram, Haryana, India</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-8">
-                <h4 className="font-medium text-gray-700 mb-4">Connect with me</h4>
-                <div className="flex gap-4">
-                  <a
-                    href={userData.linkedIn}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-white p-3 rounded-full shadow-sm hover:shadow-md transition-shadow"
-                  >
-                    <Linkedin className="text-blue-700" size={20} />
-                  </a>
-
-                  <a
-                    href={userData.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-white p-3 rounded-full shadow-sm hover:shadow-md transition-shadow"
-                  >
-                    <Github className="text-gray-800" size={20} />
-                  </a>
-
-                  <a
-                    href={userData.instagram}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-white p-3 rounded-full shadow-sm hover:shadow-md transition-shadow"
-                  >
-                    <Instagram className="text-pink-600" size={20} />
-                  </a>
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm bg-opacity-10"
-            >
-              <h3 className="text-xl font-bold text-gray-800 mb-6">Send a Message</h3>
-
-              <form className="space-y-4 text-white">
-                <div>
-                  <label htmlFor="name" className="block text-gray-300 text-sm font-medium mb-1">Name</label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    required
-                    className="w-full px-4 py-2 bg-gray-200 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-500"
-                    placeholder="Your name"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="email" className="block text-gray-300 text-sm font-medium mb-1">Email</label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    required
-                    className="w-full px-4 py-2 bg-gray-200 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-500"
-                    placeholder="your.email@example.com"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="message" className="block text-gray-300 text-sm font-medium mb-1">Message</label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    rows={4}
-                    required
-                    className="w-full px-4 py-2 bg-gray-200 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-500"
-                    placeholder="Your message here..."
-                  ></textarea>
-                </div>
-
-                <Button
-                  type="submit"
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white shadow-lg transform hover:scale-105 transition-transform duration-300"
-                >
-                  Send Message
-                </Button>
-              </form>
-            </motion.div>
+              View all 18+ projects
+              <ArrowRight size={16} />
+            </a>
           </div>
-        </div>
+        </motion.div>
       </section>
 
-      {/* Footer */}
-      <footer className="py-8 bg-gray-900 bg-opacity-70 text-white">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="mb-4 md:mb-0 text-center md:text-left">
-              <h3 className="text-2xl font-bold text-blue-400">Prem Prakash Gupta</h3>
-              <p className="text-gray-400">Full Stack Developer</p>
-            </div>
+      {/* SECTION 5 — TECHNICAL SKILLS */}
+      <section id="skills" className="py-20 max-w-[1100px] mx-auto px-6 border-b border-[#E5E7EB]">
+        <motion.div 
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="w-full"
+        >
+          <h2 className="text-3xl font-bold text-[#111827] tracking-tight mb-12">Technical Skills</h2>
 
-            <div className="flex flex-col items-center md:items-end">
-              <div className="flex gap-4 mb-4">
-                {userData.linkedIn && (
-                  <a
-                    href={userData.linkedIn}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-gray-800 p-2 rounded-full shadow-md hover:bg-blue-700 transition-colors duration-300"
-                  >
-                    <Linkedin className="text-blue-400" size={20} />
-                  </a>
-                )}
-
-                {userData.github && (
-                  <a
-                    href={userData.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-gray-800 p-2 rounded-full shadow-md hover:bg-gray-700 transition-colors duration-300"
-                  >
-                    <Github className="text-gray-400" size={20} />
-                  </a>
-                )}
-
-                {userData.instagram && (
-                  <a
-                    href={userData.instagram}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-gray-800 p-2 rounded-full shadow-md hover:bg-pink-700 transition-colors duration-300"
-                  >
-                    <Instagram className="text-pink-400" size={20} />
-                  </a>
-                )}
-
-                {userData.email && (
-                  <a
-                    href={`mailto:${userData.email}`}
-                    className="bg-gray-800 p-2 rounded-full shadow-md hover:bg-red-700 transition-colors duration-300"
-                  >
-                    <Mail className="text-red-400" size={20} />
-                  </a>
-                )}
+          <div className="space-y-8">
+            {SKILL_GROUPS.map((group, idx) => (
+              <div key={idx} className="flex flex-col md:flex-row md:items-center gap-4 md:gap-8 py-4 border-b border-[#F3F4F6] last:border-0">
+                <span className="w-32 text-sm font-bold text-[#111827] uppercase tracking-wider flex-shrink-0">
+                  {group.title}
+                </span>
+                <div className="flex flex-wrap gap-2.5">
+                  {group.skills.map((skill, sIdx) => (
+                    <span 
+                      key={sIdx}
+                      className="px-3.5 py-1.5 bg-white border border-[#E5E7EB] text-[#111827] rounded-xl text-sm font-semibold shadow-2xs hover:border-[#2563EB] transition-colors"
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
               </div>
-              <p className="text-gray-400">© {new Date().getFullYear()} All Rights Reserved</p>
-              <p className="text-gray-500 text-sm mt-1">Designed and built with ❤️</p>
+            ))}
+          </div>
+        </motion.div>
+      </section>
+
+      {/* SECTION 6 — CONTACT */}
+      <section id="contact" className="py-20 max-w-[1100px] mx-auto px-6 text-center">
+        <motion.div 
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="max-w-2xl mx-auto flex flex-col items-center"
+        >
+          <h2 className="text-3xl md:text-4xl font-extrabold text-[#111827] tracking-tight mb-3">
+            Let&apos;s build something together
+          </h2>
+          <p className="text-lg text-[#6B7280] mb-12">
+            Open to full-time roles and freelance projects
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8 w-full max-w-xl mb-12 text-left bg-white p-8 rounded-2xl border border-[#E5E7EB] shadow-xs">
+            <CopyableText text="prem.com0011@gmail.com" label="Email Address" />
+            <CopyableText text="+91-9955804730" label="Phone Number" />
+            
+            <div className="flex flex-col items-center sm:items-start">
+              <span className="text-xs font-semibold text-[#6B7280] uppercase tracking-wider mb-1">LinkedIn</span>
+              <a 
+                href="https://www.linkedin.com/in/premprakashgupta-/" 
+                target="_blank" 
+                rel="noreferrer"
+                className="text-[#2563EB] hover:text-[#1d4ed8] font-semibold text-lg flex items-center gap-1 hover:underline"
+              >
+                premprakashgupta-
+                <ExternalLink size={14} />
+              </a>
             </div>
+
+            <div className="flex flex-col items-center sm:items-start">
+              <span className="text-xs font-semibold text-[#6B7280] uppercase tracking-wider mb-1">GitHub</span>
+              <a 
+                href="https://github.com/premprakashgupta" 
+                target="_blank" 
+                rel="noreferrer"
+                className="text-[#111827] hover:text-[#2563EB] font-semibold text-lg flex items-center gap-1 hover:underline"
+              >
+                premprakashgupta
+                <ExternalLink size={14} />
+              </a>
+            </div>
+          </div>
+        </motion.div>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="bg-white border-t border-[#E5E7EB] py-12">
+        <div className="max-w-[1100px] mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+          <p className="text-[#6B7280] text-sm">
+            © 2025 Prem Prakash Gupta · Full Stack Developer · Built with Next.js
+          </p>
+
+          <div className="flex items-center gap-6">
+            <a 
+              href="https://github.com/premprakashgupta" 
+              target="_blank" 
+              rel="noreferrer" 
+              className="text-[#6B7280] hover:text-[#111827] transition-colors"
+              aria-label="GitHub"
+            >
+              <Github size={20} />
+            </a>
+            <a 
+              href="https://www.linkedin.com/in/premprakashgupta-/" 
+              target="_blank" 
+              rel="noreferrer" 
+              className="text-[#6B7280] hover:text-[#2563EB] transition-colors"
+              aria-label="LinkedIn"
+            >
+              <Linkedin size={20} />
+            </a>
+            <a 
+              href="mailto:prem.com0011@gmail.com" 
+              className="text-[#6B7280] hover:text-red-500 transition-colors"
+              aria-label="Email"
+            >
+              <Mail size={20} />
+            </a>
           </div>
         </div>
       </footer>
