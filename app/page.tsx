@@ -15,7 +15,14 @@ import {
   Code2,
   Terminal,
   Menu,
-  X
+  X,
+  Eye,
+  Monitor,
+  Tablet,
+  Smartphone,
+  RefreshCw,
+  Globe,
+  Maximize2
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -106,9 +113,9 @@ const EXPERIENCES = [
     role: "Full Stack Developer",
     company: "Thundergits Consultancy Pvt. Ltd.",
     location: "Remote",
-    dates: "Apr 2025 – Present",
+    dates: "Apr 2025 – 30 Jun 2026",
     bullets: [
-      "Built a medical e-commerce + warehouse ERP with 250+ REST APIs serving 3,000+ active users",
+      "Built DavaBharti — medical e-commerce + warehouse ERP with 250+ REST APIs serving 3,000+ active users",
       "Implemented JWT auth, RBAC, multi-tenant architecture — reduced unauthorised access to zero across 5+ tenants",
       "AWS EC2 + S3 deployment with Nginx + PM2 — reduced server downtime by 80%"
     ],
@@ -141,54 +148,136 @@ const EXPERIENCES = [
 
 const PROJECTS = [
   {
-    title: "PharmaSuite ERP",
+    id: "davabharti",
+    index: "1",
+    title: "DavaBharti",
+    category: "Medical E-Commerce & Warehouse ERP",
     featured: true,
-    statsBadge: "3,000+ active users",
-    problem: "Medical store networks needed a unified e-commerce + warehouse management system",
+    statsBadge: "3,000+ Active Users",
+    problem: "Medical store networks needed a unified e-commerce + warehouse management system with real-time inventory and fast PAN India delivery.",
     tech: ["Node.js", "MySQL", "Prisma", "React", "AWS EC2", "S3"],
-    live: "",
-    bgGradient: "from-blue-500 to-indigo-600"
+    live: "https://davabharti.com/",
+    bgGradient: "from-blue-600 to-indigo-700"
   },
   {
-    title: "Thikana 360",
+    id: "fastexcare",
+    index: "2",
+    title: "Fastex Care",
+    category: "On-Demand Home Healthcare Platform",
     featured: false,
-    problem: "PG/Hostel accommodation finder and management SaaS with digital tenant onboarding",
-    tech: ["React.js", "Node.js", "Express", "MongoDB", "Tailwind CSS"],
-    live: "",
-    bgGradient: "from-emerald-500 to-teal-600"
+    statsBadge: "GPS Matched within 5km",
+    problem: "Patients needed on-demand home healthcare (nursing, diagnostics, elder care) connecting verified caregivers with 5km GPS radius matching and OTP security.",
+    tech: ["Next.js", "Node.js", "Razorpay", "GPS Radius", "Tailwind CSS"],
+    live: "https://fastexcare.in/",
+    bgGradient: "from-emerald-600 to-teal-700"
   },
   {
+    id: "bhaktivillas",
+    index: "3",
     title: "Bhakti Villas",
+    category: "Luxury Plots & Cottages Township",
     featured: false,
-    problem: "Luxury resort reservation platform with interactive gallery and booking workflow",
-    tech: ["Next.js", "Tailwind CSS", "Node.js", "Express", "Nginx"],
-    live: "",
-    bgGradient: "from-amber-500 to-orange-600"
+    statsBadge: "Resort Township in Mathura",
+    problem: "Luxury resort & residential township reservation platform in sacred Braj region with guaranteed rental income, tourism NOC, and custom cottage building.",
+    tech: ["Next.js", "React", "Tailwind CSS", "Framer Motion", "Nginx"],
+    live: "https://bhaktivillas.com/",
+    bgGradient: "from-amber-600 to-orange-700"
   },
   {
+    id: "customly",
+    index: "4",
+    title: "Customly",
+    category: "Corporate Gifting & Custom Branding",
+    featured: false,
+    statsBadge: "500+ SKUs across 11 Categories",
+    problem: "One-stop solution for corporate branding & custom corporate gifting with 500+ SKUs (Apparel, Drinkware, Tech, Gourmet), custom logo printing, and Pan-India shipping.",
+    tech: ["Next.js", "React", "Tailwind CSS", "Material Symbols", "TypeScript"],
+    live: "https://customly.in/",
+    bgGradient: "from-purple-600 to-pink-700"
+  },
+  {
+    id: "vyapaaros",
+    index: "5",
+    title: "VyapaarOS",
+    category: "Software Engineering & Dev Practice",
+    featured: false,
+    statsBadge: "Custom Web & App Dev",
+    problem: "Freelance web & app development platform building custom SaaS platforms, ERP systems, and mobile apps directly from scratch without agency middlemen.",
+    tech: ["Next.js", "React", "Node.js", "Express", "MongoDB", "Tailwind CSS"],
+    live: "https://www.vyapaaros.in/",
+    bgGradient: "from-[#F2541B] to-amber-600"
+  },
+  {
+    id: "jevixtech",
+    index: "6",
+    title: "Jevix Tech",
+    category: "Smart Clean-Tech & AI/IoT Hardware",
+    featured: false,
+    statsBadge: "Smart Ideathon Winner",
+    problem: "Pioneering AI, IoT, and eco-friendly hardware solutions for clean energy efficiency, circular waste pyrolysis (PolyFueler), and ag-tech (AgriBot & Clay-Cooler).",
+    tech: ["Next.js", "React", "Tailwind CSS", "IoT/AI", "Microcontrollers"],
+    live: "https://www.jevixtech.in/",
+    bgGradient: "from-teal-600 to-cyan-700"
+  },
+  {
+    id: "enersolbiopower",
+    index: "7",
+    title: "Enersol Biopower",
+    category: "Renewable Energy & Biomass Solutions",
+    featured: false,
+    statsBadge: "Biomass Clean Energy",
+    problem: "Manufacturer and supplier of biomass gasifiers, smokeless biomass stoves, biogas generator sets, and clean energy solutions across India.",
+    tech: ["HTML5", "CSS3", "JavaScript", "ImageKit CDN", "Analytics"],
+    live: "https://enersolbiopower.com/",
+    bgGradient: "from-green-600 to-emerald-700"
+  },
+  {
+    id: "thundergits",
+    index: "8",
+    title: "Thundergits",
+    category: "AI-Driven Web, Mobile & IT Consultancy",
+    featured: false,
+    statsBadge: "50+ Enterprise Clients",
+    problem: "AI-driven web development, mobile apps, digital marketing, and enterprise IT solutions serving 50+ clients across India.",
+    tech: ["React", "Node.js", "Express", "React Native", "AWS", "Docker"],
+    live: "https://thundergits.com/",
+    bgGradient: "from-sky-600 to-indigo-700"
+  },
+  {
+    id: "edugits",
+    index: "9",
     title: "Edugits",
+    category: "Multi-Tenant Smart School ERP",
     featured: false,
-    problem: "School management SaaS — classes, fees, results, admit cards",
+    statsBadge: "500+ Schools Onboarded",
+    problem: "Affordable school management SaaS platform (Web, Mobile & Desktop app) for managing classes, fees, exam admit cards, results, and student data.",
     tech: ["MongoDB", "Express", "React", "Node.js", "Razorpay"],
-    live: "",
-    bgGradient: "from-purple-500 to-pink-600"
+    live: "https://edugits.thundergits.com/",
+    bgGradient: "from-indigo-600 to-violet-700"
   },
   {
+    id: "codingpandas",
+    index: "10",
     title: "Coding Pandas",
+    category: "Competitive Programming Platform",
     featured: false,
-    statsBadge: "60% API throughput improvement",
-    problem: "Competitive programming platform with online compiler and real-time leaderboard",
-    tech: ["Next.js", "Node.js", "BullMQ", "SSE", "R2"],
-    live: "https://codingpandas.in",
-    bgGradient: "from-orange-500 to-red-600"
+    statsBadge: "60% API Throughput Boost",
+    problem: "Competitive programming platform with online compiler, blog management, real-time leaderboard, and Server-Sent Events (SSE) notifications.",
+    tech: ["Next.js", "Node.js", "BullMQ", "SSE", "Cloudflare R2"],
+    live: "https://codingpandas.in/",
+    bgGradient: "from-rose-600 to-red-700"
   },
   {
-    title: "Loqo AI",
+    id: "amleshmishra",
+    index: "11",
+    title: "Amlesh Mishra",
+    category: "Executive Founder & Leadership Platform",
     featured: false,
-    problem: "Spiritual video streaming platform with HLS and Google Ads integration",
-    tech: ["Next.js", "HLS", "Video.js", "Google Ads"],
-    live: "",
-    bgGradient: "from-sky-500 to-blue-600"
+    statsBadge: "Founder Portfolio",
+    problem: "Executive brand platform for Amlesh Mishra (Founder & Director, Dava Bharti) showcasing an 18+ year journey in healthcare, pharmacy networks, and telehealth ecosystem.",
+    tech: ["Next.js", "React", "Tailwind CSS", "Playfair Display", "TypeScript"],
+    live: "https://amleshmishra.in/",
+    bgGradient: "from-blue-700 to-cyan-800"
   }
 ];
 
@@ -283,8 +372,8 @@ export default function Portfolio() {
           {/* Right Solid Button */}
           <div className="hidden md:block">
             <a 
-              href="/resume/Prem_Prakash_Gupta__Resume.pdf" 
-              download="Prem_Prakash_Gupta_Resume.pdf"
+              href="/resume/Prem_Prakash_Gupta_Resume_OnePage.pdf" 
+              download="Prem_Prakash_Gupta_Resume_OnePage.pdf"
               className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#2563EB] hover:bg-[#1d4ed8] text-white font-semibold text-sm rounded-xl transition-all shadow-sm hover:shadow active:scale-95"
             >
               <FileText size={16} />
@@ -319,8 +408,8 @@ export default function Portfolio() {
               </button>
             ))}
             <a 
-              href="/resume/Prem_Prakash_Gupta__Resume.pdf" 
-              download="Prem_Prakash_Gupta_Resume.pdf"
+              href="/resume/Prem_Prakash_Gupta_Resume_OnePage.pdf" 
+              download="Prem_Prakash_Gupta_Resume_OnePage.pdf"
               className="w-full text-center py-3 bg-[#2563EB] hover:bg-[#1d4ed8] text-white font-semibold rounded-xl mt-2 block"
             >
               Download CV
@@ -369,8 +458,8 @@ export default function Portfolio() {
                 <ArrowRight size={18} />
               </button>
               <a 
-                href="/resume/Prem_Prakash_Gupta__Resume.pdf" 
-                download="Prem_Prakash_Gupta_Resume.pdf"
+                href="/resume/Prem_Prakash_Gupta_Resume_OnePage.pdf" 
+                download="Prem_Prakash_Gupta_Resume_OnePage.pdf"
                 className="inline-flex items-center gap-2 px-6 py-3.5 border border-[#E5E7EB] bg-white hover:bg-[#F9FAFB] text-[#111827] font-semibold text-base rounded-xl transition-all active:scale-95"
               >
                 Download CV
@@ -544,38 +633,63 @@ export default function Portfolio() {
                 key={idx}
                 whileHover={{ y: -3 }}
                 transition={{ duration: 0.2, ease: "easeOut" }}
-                className="bg-white border border-[#E5E7EB] rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-shadow grid grid-cols-1 md:grid-cols-12"
+                className="bg-white border border-[#E5E7EB] rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-all grid grid-cols-1 md:grid-cols-12"
               >
-                {/* Left side: Simulated Screenshot Placeholder (4 cols) */}
-                <div className={`md:col-span-4 bg-gradient-to-br ${project.bgGradient} p-8 flex flex-col justify-between text-white relative min-h-[180px] md:min-h-full`}>
-                  <div className="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent pointer-events-none" />
-                  
-                  <div className="z-10 flex items-center justify-between w-full">
-                    <Code2 size={24} className="opacity-80" />
-                    {project.statsBadge && (
-                      <span className="text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 bg-white/20 rounded-full border border-white/20">
-                        {project.statsBadge}
-                      </span>
-                    )}
+                {/* Left side: Live Iframe Web Preview Mockup */}
+                <div className="md:col-span-5 relative bg-[#1E1E2E] flex flex-col h-[280px] md:h-full min-h-[280px] border-b md:border-b-0 md:border-r border-[#E5E7EB] overflow-hidden group">
+                  {/* Browser Window Header */}
+                  <div className="bg-[#151522] px-3.5 py-2.5 flex items-center justify-between border-b border-white/10 shrink-0 z-10">
+                    <div className="flex items-center gap-1.5">
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#FF5F56] inline-block" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E] inline-block" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#27C93F] inline-block" />
+                    </div>
+                    <div className="flex items-center gap-1.5 px-3 py-0.5 bg-black/40 rounded-full text-[10px] text-gray-300 font-mono max-w-[200px] truncate border border-white/10">
+                      <Globe size={11} className="text-[#2563EB] shrink-0" />
+                      <span className="truncate">{project.live.replace("https://", "").replace("http://", "").replace(/\/$/, "")}</span>
+                    </div>
+                    <a 
+                      href={project.live} 
+                      target="_blank" 
+                      rel="noreferrer"
+                      className="p-1 text-gray-400 hover:text-white transition-colors"
+                      title="Open Live Website"
+                    >
+                      <ExternalLink size={12} />
+                    </a>
                   </div>
 
-                  <div className="z-10">
-                    <h4 className="text-2xl font-bold tracking-tight mb-1">{project.title}</h4>
-                    <p className="text-white/70 text-xs font-mono">
-                      {project.live ? project.live.replace("https://", "").replace("http://", "") : "Confidential Project"}
-                    </p>
+                  {/* Live Iframe Body */}
+                  <div className="relative flex-1 w-full h-full bg-slate-900 overflow-hidden">
+                    <iframe
+                      src={project.live}
+                      title={`${project.title} Live Preview`}
+                      className="w-[200%] h-[200%] origin-top-left transform scale-50 border-none pointer-events-auto"
+                      sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+                      loading="lazy"
+                    />
+                    {/* Bottom gradient shading */}
+                    <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-[#1E1E2E]/80 to-transparent pointer-events-none" />
                   </div>
                 </div>
 
-                {/* Right side: Project Details (8 cols) */}
-                <div className="md:col-span-8 p-6 md:p-8 flex flex-col justify-between">
+                {/* Right side: Project Details (7 cols) */}
+                <div className="md:col-span-7 p-6 md:p-8 flex flex-col justify-between">
                   <div>
-                    {project.featured && (
-                      <span className="inline-flex items-center text-[10px] font-bold text-[#2563EB] uppercase tracking-widest mb-3">
-                        Featured Project
+                    <div className="flex items-center justify-between gap-3 mb-2 flex-wrap">
+                      <span className="text-xs font-mono font-bold text-[#2563EB] bg-[#2563EB]/10 px-2.5 py-0.5 rounded-md">
+                        Project #{project.index}
                       </span>
-                    )}
-                    <h3 className="text-xl font-bold text-[#111827] mb-2">{project.title}</h3>
+                      {project.statsBadge && (
+                        <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
+                          {project.statsBadge}
+                        </span>
+                      )}
+                    </div>
+
+                    <h3 className="text-2xl font-bold text-[#111827] tracking-tight mb-1">{project.title}</h3>
+                    <p className="text-xs font-semibold text-[#2563EB] mb-3">{project.category}</p>
+
                     <p className="text-[#6B7280] text-sm mb-4 leading-relaxed">
                       <strong className="text-[#111827] font-semibold">Problem solved:</strong> {project.problem}
                     </p>
@@ -587,30 +701,24 @@ export default function Portfolio() {
                       {project.tech.map((t, tIdx) => (
                         <span 
                           key={tIdx}
-                          className="px-2.5 py-1 bg-[#F3F4F6] text-[#6B7280] rounded-lg text-xs font-semibold"
+                          className="px-2.5 py-1 bg-[#F3F4F6] text-[#111827] rounded-lg text-xs font-semibold"
                         >
                           {t}
                         </span>
                       ))}
                     </div>
 
-                    {/* Links */}
-                    <div className="flex items-center gap-4 pt-2 border-t border-[#F3F4F6]">
-                      {project.live ? (
-                        <a 
-                          href={project.live} 
-                          target="_blank" 
-                          rel="noreferrer"
-                          className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#2563EB] hover:text-[#1d4ed8]"
-                        >
-                          Visit Application
-                          <ExternalLink size={14} />
-                        </a>
-                      ) : (
-                        <span className="text-xs font-semibold text-[#6B7280] uppercase tracking-wider bg-[#F3F4F6] px-2.5 py-1 rounded">
-                          NDA Protected (Private Codebase)
-                        </span>
-                      )}
+                    {/* Visit Link */}
+                    <div className="flex items-center gap-4 pt-3 border-t border-[#F3F4F6]">
+                      <a 
+                        href={project.live} 
+                        target="_blank" 
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-[#2563EB] hover:bg-[#1d4ed8] text-white font-semibold text-xs rounded-xl transition-all shadow-xs active:scale-95"
+                      >
+                        Visit Application
+                        <ArrowRight size={14} />
+                      </a>
                     </div>
                   </div>
                 </div>

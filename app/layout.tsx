@@ -59,9 +59,12 @@ export const metadata: Metadata = {
     creator: "@premprakashgupta",
   },
   icons: {
-    icon: "/favicon.png?v=2",
-    shortcut: "/favicon.ico?v=2",
-    apple: "/favicon.png?v=2",
+    icon: [
+      { url: "/avatar.png" },
+      { url: "/avatar.png", type: "image/png" },
+    ],
+    shortcut: "/avatar.png",
+    apple: "/avatar.png",
   },
 };
 
@@ -114,6 +117,8 @@ export default function RootLayout({
   return (
     <html lang="en" className={cn(inter.variable, jetbrainsMono.variable)}>
       <head>
+        <link rel="icon" href="/avatar.png" type="image/png" sizes="any" />
+        <link rel="apple-touch-icon" href="/avatar.png" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
